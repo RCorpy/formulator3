@@ -14,6 +14,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import fs from 'fs'
+
 
 class AppUpdater {
   constructor() {
@@ -27,7 +29,16 @@ let mainWindow: BrowserWindow | null = null;
 
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
+  console.log(msgTemplate(arg.hello));
+
+  var dict = {"one" : [15, 4.5],
+            "two" : [34, 3.3],
+            "three" : [67, 5.0],
+            "four" : [32, 4.1]};
+
+  let jsonString = JSON.stringify(dict);
+  fs.writeFileSync("thing.json", jsonString)
+
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
