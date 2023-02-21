@@ -1,0 +1,19 @@
+{
+    "name": "Prueba Producto",
+    "rawMat": true,
+    "price": 10000,
+    "components":{
+      "1":{
+        "name": "componente 1",
+        "porcentaje": "0.3333"
+      },
+      "2":{
+        "name": "componente 2",
+        "porcentaje": "0.3333"
+      },
+      "3":{
+        "name": "componente 3",
+        "porcentaje": "0.3333"
+      }
+    }
+  }

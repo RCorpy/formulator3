@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Table from 'react-bootstrap/Table';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 
 
 
-export default function ProductSelector() {
+export default function ProductSelector({fullData}) {
 
   const colSpans = {
       n:{width:"10%"},
@@ -25,21 +25,12 @@ export default function ProductSelector() {
   const [product, setProduct] = useState({
     name: "Prueba Producto",
     rawMat: true,
-    price: 10000,
-    components:{
-      1:{
-        name: "componente 1",
-        porcentaje: 1/3
-      },
-      2:{
-        name: "componente 2",
-        porcentaje: 1/3
-      },
-      3:{
-        name: "componente 3",
-        porcentaje: 1/3
-      }
-    }
+    price: 0,
+    components:{}
+  })
+
+  useEffect(()=>{
+    setProduct(fullData)
   })
 
   const calcularPrecio = () => {
@@ -55,7 +46,7 @@ export default function ProductSelector() {
       <tr key={element}>
             <th style={colSpans.n}>{element}</th>
             <th style={colSpans.nombre}>{localFunctionObject[element].name}</th>
-            <th style={colSpans.cantidad}>{localFunctionObject[element].porcentaje * cantidad}</th>
+            <th style={colSpans.cantidad}>{Number(localFunctionObject[element].porcentaje) * cantidad}</th>
             <th style={colSpans.precio}>{calcularPrecio()}</th>
       </tr>
     ))

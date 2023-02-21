@@ -42,6 +42,16 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
+ipcMain.on('getFullSetOfData', async (event, arg) => {
+
+  const jsonDB = JSON.parse(fs.readFileSync("jsondb.json",'utf8'))
+  //fs.writeFileSync("thing.json", jsonString)
+  console.log(jsonDB)
+
+  event.reply('getFullSetOfData',jsonDB)
+  //event.reply('ipc-example', msgTemplate('pong'));
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();

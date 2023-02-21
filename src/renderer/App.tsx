@@ -1,4 +1,5 @@
 import { MemoryRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import {useState} from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ProductSelector from './assets/ProductSelector';
@@ -14,6 +15,34 @@ import Datos from './assets/Datos';
 import './App.css'
 
 function Hello() {
+
+  const [fullData, setFullData] = useState({
+    name: "Prueba Producto",
+    rawMat: true,
+    price: 10000,
+    components:{
+      1:{
+        name: "componente 1",
+        porcentaje: 1/3
+      },
+      2:{
+        name: "componente 2",
+        porcentaje: 1/3
+      }
+    }
+  })
+
+  const getJSONData = () => {
+    {
+        window.electron.ipcRenderer.sendMessage('getFullSetOfData', []);
+    }
+  }
+  window.electron.ipcRenderer.once('getFullSetOfData', (arg) => {
+    // eslint-disable-next-line no-console
+    setFullData(arg)
+    console.log(fullData);
+  });
+
   return (
     <div>
       <Form.Group controlId="formFileMultiple" className="mb-3">
@@ -27,10 +56,11 @@ function Hello() {
           multiple
         />
       </Form.Group>
+      <Button onClick={getJSONData}>GET JSON DATA</Button>
       <Link to="/modificar/14">
         <Button>{'A Product Selector con variable 14'}</Button>
       </Link>
-      <ProductSelector />
+      <ProductSelector fullData={fullData}/>
     </div>
   );
 }
