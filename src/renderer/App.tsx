@@ -11,6 +11,7 @@ import Gestion from './assets/Gestion';
 import GestionNuevo from './assets/GestionNuevo';
 import GestionBuscar from './assets/GestionBuscar';
 import Datos from './assets/Datos';
+import './App.css'
 
 function Hello() {
   return (
