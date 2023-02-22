@@ -1,5 +1,5 @@
 import { MemoryRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ProductSelector from './assets/ProductSelector';
@@ -14,34 +14,7 @@ import GestionBuscar from './assets/GestionBuscar';
 import Datos from './assets/Datos';
 import './App.css'
 
-function Hello() {
-
-  const [fullData, setFullData] = useState({
-    name: "Prueba Producto",
-    rawMat: true,
-    price: 10000,
-    components:{
-      1:{
-        name: "componente 1",
-        porcentaje: 1/3
-      },
-      2:{
-        name: "componente 2",
-        porcentaje: 1/3
-      }
-    }
-  })
-
-  const getJSONData = () => {
-    {
-        window.electron.ipcRenderer.sendMessage('getFullSetOfData', []);
-    }
-  }
-  window.electron.ipcRenderer.once('getFullSetOfData', (arg) => {
-    // eslint-disable-next-line no-console
-    setFullData(arg)
-    console.log(fullData);
-  });
+function Hello({getJSONData}) {
 
   return (
     <div>
@@ -60,7 +33,6 @@ function Hello() {
       <Link to="/modificar/14">
         <Button>{'A Product Selector con variable 14'}</Button>
       </Link>
-      <ProductSelector fullData={fullData}/>
     </div>
   );
 }
@@ -76,25 +48,44 @@ function Example() {
 }
 
 export default function App() {
+
+  const [fullData, setFullData] = useState()
+
+  const getJSONData = () => {
+    {
+        window.electron.ipcRenderer.sendMessage('getFullSetOfData', []);
+    }
+  }
+  window.electron.ipcRenderer.once('getFullSetOfData', (recievedData) => {
+    // eslint-disable-next-line no-console
+    setFullData(recievedData)
+    console.log(fullData);
+  });
+
+  useEffect(()=>{
+    getJSONData()
+  },[])
+
+
   return (
     <>
       <Router>
         {Example()}
         <Routes>
-          <Route path="/" element={<Hello />} />
+          <Route path="/" element={<Hello getJSONData={getJSONData}/>} />
 
           <Route path="/menu" element={<Menu />} />
 
           <Route path="/fabricacion" element={<Fabricacion />} />
           <Route path="/fabricacion/nuevo" element={<FabricacionNuevo />} />
           <Route path="/fabricacion/historial" element={<FabricacionHistorial />} />
-          <Route path="/fabricacion/buscar" element={<ProductSelector />} />
+          <Route path="/fabricacion/buscar" element={<ProductSelector fullData={fullData}/>} />
 
           <Route path="/gestion" element={<Gestion />} />
           <Route path="/gestion/nuevo" element={<GestionNuevo />} />
-          <Route path="/gestion/buscar" element={<GestionBuscar />} />
-          <Route path="/gestion/modificar/:id" element={<ProductSelector />} />
-          <Route path="/gestion/eliminar/:id" element={<ProductSelector />} />
+          <Route path="/gestion/buscar" element={<ProductSelector fullData={fullData}/>} />
+          <Route path="/gestion/modificar/:id" element={<ProductSelector fullData={fullData}/>} />
+          <Route path="/gestion/eliminar/:id" element={<ProductSelector fullData={fullData}/>} />
 
           <Route path="/datos" element={<Datos />} />
           

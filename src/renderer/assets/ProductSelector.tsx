@@ -17,20 +17,21 @@ export default function ProductSelector({fullData}) {
     }
 
   const [cantidad, setCantidad] = useState(1)
+  const [selectedProduct, setSelectedProduct] = useState("")
 
   const handleChangeCantidad = (e:any) => {
     setCantidad(e.target.value)
   }
 
   const [product, setProduct] = useState({
-    name: "Prueba Producto",
+    name: "",
     rawMat: true,
-    price: 0,
+    price: "",
     components:{}
   })
 
   useEffect(()=>{
-    setProduct(fullData)
+    setProduct(fullData.selectedProduct)
   })
 
   const calcularPrecio = () => {
