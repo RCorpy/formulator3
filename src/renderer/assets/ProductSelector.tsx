@@ -18,10 +18,7 @@ export default function ProductSelector({fullData}) {
 
   const [product, setProduct] = useState({
     kkey: "",
-    components:{
-      "possibleProduct1": "0.1",
-      "possibleProduct2": "0.2",
-    }
+    components:{}
   })
 
   useEffect(()=>{
@@ -44,12 +41,9 @@ export default function ProductSelector({fullData}) {
     const localFunctionObject = product.components
 
     const returnValue = Object.keys(localFunctionObject).map(element=>{
-
-      console.log("this Data", fullData.rawMats.rawMats)
-      
       return (
       <tr key={element}>
-            <th style={colSpans.n}>{"what"}</th>
+            <th style={colSpans.n}>{fullData.rawMats[element].kkey}</th>
             <th style={colSpans.nombre}>{element}</th>
             <th style={colSpans.cantidad}>{Number(localFunctionObject[element]) * cantidad}</th>
             <th style={colSpans.precio}>{calcularPrecio()}</th>
