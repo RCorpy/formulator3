@@ -16,49 +16,54 @@ export default function ProductSelector({fullData}) {
       precio: {width:'20%'}
     }
 
+  const [product, setProduct] = useState({
+    kkey: "",
+    components:{
+      "possibleProduct1": "0.1",
+      "possibleProduct2": "0.2",
+    }
+  })
+
+  useEffect(()=>{
+    setProduct(fullData.formulas[selectedProduct])
+  },[])
+
   const [cantidad, setCantidad] = useState(1)
-  const [selectedProduct, setSelectedProduct] = useState("")
+  const [selectedProduct, setSelectedProduct] = useState("test formula")
 
   const handleChangeCantidad = (e:any) => {
     setCantidad(e.target.value)
   }
 
-  const [product, setProduct] = useState({
-    name: "",
-    rawMat: true,
-    price: "",
-    components:{}
-  })
-
-  useEffect(()=>{
-    setProduct(fullData.selectedProduct)
-  })
-
   const calcularPrecio = () => {
     return "Precio"
   }
 
-
   const makeTableRows = () => {
-
+    
     const localFunctionObject = product.components
 
-    const returnValue = Object.keys(localFunctionObject).map(element=>(
+    const returnValue = Object.keys(localFunctionObject).map(element=>{
+
+      console.log("this Data", fullData.rawMats.rawMats)
+      
+      return (
       <tr key={element}>
-            <th style={colSpans.n}>{element}</th>
-            <th style={colSpans.nombre}>{localFunctionObject[element].name}</th>
-            <th style={colSpans.cantidad}>{Number(localFunctionObject[element].porcentaje) * cantidad}</th>
+            <th style={colSpans.n}>{"what"}</th>
+            <th style={colSpans.nombre}>{element}</th>
+            <th style={colSpans.cantidad}>{Number(localFunctionObject[element]) * cantidad}</th>
             <th style={colSpans.precio}>{calcularPrecio()}</th>
       </tr>
-    ))
-
-
+    )})
+    
     return returnValue
+  
+
   }
 
   return (
     <div>
-      <h1>{product.name}</h1>
+      <h1>{"product.name"}</h1>
     <Table striped bordered hover responsive="md">
         <thead>
           <tr>
