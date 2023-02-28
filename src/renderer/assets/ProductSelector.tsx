@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 
 
 
-export default function ProductSelector({fullData}) {
+export default function ProductSelector({fullData, searched}) {
 
   const colSpans = {
       n:{width:"10%"},

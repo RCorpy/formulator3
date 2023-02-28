@@ -51,6 +51,7 @@ function Example() {
 export default function App() {
 
   const [fullData, setFullData] = useState(exampleJSON)
+  const [searched, setSearched] = useState("test formula")
 
   const getJSONData = () => {
     {
@@ -84,7 +85,10 @@ export default function App() {
 
           <Route path="/gestion" element={<Gestion />} />
           <Route path="/gestion/nuevo" element={<GestionNuevo />} />
-          <Route path="/gestion/buscar" element={<ProductSelector fullData={fullData}/>} />
+
+          <Route path="/gestion/buscar" element={<GestionBuscar fullData={fullData} setSearched={setSearched} searched={searched}/>} />
+          <Route path="/gestion/selector" element={<ProductSelector fullData={fullData} searched={searched}/>} />
+          
           <Route path="/gestion/modificar/:id" element={<ProductSelector fullData={fullData}/>} />
           <Route path="/gestion/eliminar/:id" element={<ProductSelector fullData={fullData}/>} />
 
