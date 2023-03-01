@@ -27,7 +27,7 @@ export default function GestionBuscar({fullData, setSearched, searched}) {
 
     return (<>
       {foundRawMaterials.map(element=>(
-      <tr>
+      <tr key={element}>
         <th>
           {element}
         </th>
@@ -42,7 +42,7 @@ export default function GestionBuscar({fullData, setSearched, searched}) {
 
     return (<>
             {foundFormulas.map(element=>(
-            <tr>
+            <tr key={element}>
               <th>
                 {element}
               </th>
