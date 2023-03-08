@@ -1,12 +1,16 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import Table from 'react-bootstrap/Table';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
+import MyModal from './Modal'
 import { Button } from 'react-bootstrap';
 
-
+//NECESITO BOTONES PARA GUARDAR Y ELIMINAR EL PRODUCT MODIFICADO
 
 export default function ProductSelector({fullData, searched}) {
+
+  const [modalShow, setModalShow] = useState(false);
+  const [modalChangeData, setModalChangeData] = useState("")
 
   const colSpans = {
       n:{width:"10%"},
@@ -16,17 +20,9 @@ export default function ProductSelector({fullData, searched}) {
       precio: {width:'20%'}
     }
 
-  const [product, setProduct] = useState({
-    kkey: "",
-    components:{}
-  })
-
-  useEffect(()=>{
-    setProduct(fullData.formulas[selectedProduct])
-  },[])
+  const [product, setProduct] = useState(fullData.formulas[searched])
 
   const [cantidad, setCantidad] = useState(1)
-  const [selectedProduct, setSelectedProduct] = useState("test formula")
 
   const handleChangeCantidad = (e:any) => {
     setCantidad(e.target.value)
@@ -38,16 +34,22 @@ export default function ProductSelector({fullData, searched}) {
     Object.keys(thisFormula.components).forEach(component => {
       if(fullData.rawMats[component]) returnTotal= returnTotal + (Number(thisFormula.components[component])*fullData.rawMats[component].price)
       else {
-        console.log("else", calcularPrecio(component))
+        //console.log("else", calcularPrecio(component))
         returnTotal = returnTotal + calcularPrecio(component) * Number(thisFormula.components[component])
       }
     })
      return returnTotal
   }
 
+
+  const showModal = (element) =>{
+    setModalChangeData(element)
+    setModalShow(true)
+  }
+
   const makeTableRows = () => {
     let total = 0
-    const localFunctionObject = product.components
+    const localFunctionObject:any = product.components
 
     const returnValue = Object.keys(localFunctionObject).map(element=>{
       
@@ -57,9 +59,9 @@ export default function ProductSelector({fullData, searched}) {
         
         total = total + precioLocal * Number(localFunctionObject[element])
 
-        console.log(precioLocal, "->", total)
+        //console.log(precioLocal, "->", total, "searched ->", searched)
         return (
-        <tr key={element}>
+        <tr key={element} onClick={() => showModal(element)}>
               <th style={colSpans.n}>{fullData.rawMats[element].kkey}</th>
               <th style={colSpans.nombre}>{element}</th>
               <th style={colSpans.cantidad}>{Number(localFunctionObject[element]) * cantidad}</th>
@@ -73,9 +75,9 @@ export default function ProductSelector({fullData, searched}) {
       
       total = total + precioLocal * Number(localFunctionObject[element])
 
-      console.log(precioLocal, "->", total)
+      //console.log(precioLocal, "->", total)
       return (
-        <tr key={element}>
+        <tr key={element} onClick={() => showModal(element)}>
               <th style={colSpans.n}>{fullData.formulas[element].kkey}</th>
               <th style={colSpans.nombre}>{element}</th>
               <th style={colSpans.cantidad}>{Number(localFunctionObject[element]) * cantidad}</th>
@@ -111,7 +113,7 @@ export default function ProductSelector({fullData, searched}) {
 
   return (
     <div>
-      <h1>{selectedProduct}</h1>
+      <h1>{searched}</h1>
     <Table striped bordered hover responsive="md">
         <thead>
           <tr>
@@ -129,6 +131,14 @@ export default function ProductSelector({fullData, searched}) {
         <InputGroup.Text>Cantidad</InputGroup.Text>
         <Form.Control type='number' onChange={handleChangeCantidad}/>
       </InputGroup>
+      <Button onClick={() => console.log("this should be fullData.formulas", fullData.formulas)}>show modal</Button>
+      <MyModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        product={...product}
+        element={modalChangeData}
+        setProduct={setProduct}
+      />
       </div>
   )
 }

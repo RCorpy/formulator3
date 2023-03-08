@@ -78,10 +78,10 @@ export default function App() {
 
           <Route path="/menu" element={<Menu />} />
 
-          <Route path="/fabricacion" element={<Fabricacion />} />
+          <Route path="/fabricacion" element={<Fabricacion fullData={fullData}/>} />
           <Route path="/fabricacion/nuevo" element={<FabricacionNuevo />} />
           <Route path="/fabricacion/historial" element={<FabricacionHistorial />} />
-          <Route path="/fabricacion/buscar" element={<ProductSelector fullData={fullData}/>} />
+          <Route path="/fabricacion/buscar" element={<ProductSelector fullData={fullData} searched={searched}/>} />
 
           <Route path="/gestion" element={<Gestion />} />
           <Route path="/gestion/nuevo" element={<GestionNuevo />} />
@@ -89,8 +89,8 @@ export default function App() {
           <Route path="/gestion/buscar" element={<GestionBuscar fullData={fullData} setSearched={setSearched} searched={searched}/>} />
           <Route path="/gestion/selector" element={<ProductSelector fullData={fullData} searched={searched}/>} />
           
-          <Route path="/gestion/modificar/:id" element={<ProductSelector fullData={fullData}/>} />
-          <Route path="/gestion/eliminar/:id" element={<ProductSelector fullData={fullData}/>} />
+          <Route path="/gestion/modificar/:id" element={<ProductSelector fullData={fullData} searched={searched}/>} />
+          <Route path="/gestion/eliminar/:id" element={<ProductSelector fullData={fullData} searched={searched}/>} />
 
           <Route path="/datos" element={<Datos />} />
           
