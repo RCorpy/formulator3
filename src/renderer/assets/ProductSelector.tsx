@@ -3,13 +3,15 @@ import Table from 'react-bootstrap/Table';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import MyModal from './Modal'
+import AddToFormulaModal from './AddToFormulaModal'
 import { Button } from 'react-bootstrap';
 
-//NECESITO BOTONES PARA GUARDAR Y ELIMINAR EL PRODUCT MODIFICADO
+//NECESITO BOTONES PARA GUARDAR Y ELIMINAR EL PRODUCT MODIFICADO (y añadir)
 
 export default function ProductSelector({fullData, searched}) {
 
   const [modalShow, setModalShow] = useState(false);
+  const [addToFormulaModalShow, setAddToFormulaModalShow] = useState(false);
   const [modalChangeData, setModalChangeData] = useState("")
 
   const colSpans = {
@@ -131,7 +133,9 @@ export default function ProductSelector({fullData, searched}) {
         <InputGroup.Text>Cantidad</InputGroup.Text>
         <Form.Control type='number' onChange={handleChangeCantidad}/>
       </InputGroup>
-      <Button onClick={() => console.log("this should be fullData.formulas", fullData.formulas)}>show modal</Button>
+      <Button variant="success" onClick={() => console.log("")}>Guardar</Button>
+      <Button onClick={() => setAddToFormulaModalShow(true)}>Añadir fila</Button>
+      <Button variant="danger" onClick={() => console.log("")}>Borrar formula</Button>
       <MyModal
         show={modalShow}
         onHide={() => setModalShow(false)}
@@ -139,6 +143,13 @@ export default function ProductSelector({fullData, searched}) {
         element={modalChangeData}
         setProduct={setProduct}
       />
+      <AddToFormulaModal
+       show={addToFormulaModalShow}
+       onHide={() => setAddToFormulaModalShow(false)}
+       product={...product}
+       setProduct={setProduct}
+      />
+
       </div>
   )
 }
