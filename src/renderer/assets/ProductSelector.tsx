@@ -5,14 +5,21 @@ import Form from 'react-bootstrap/Form';
 import MyModal from './Modal'
 import AddToFormulaModal from './AddToFormulaModal'
 import { Button } from 'react-bootstrap';
+import DangerModal from './DangerModal';
+import { useNavigate } from 'react-router-dom'
+
+
 
 //NECESITO BOTONES PARA GUARDAR Y ELIMINAR EL PRODUCT MODIFICADO (y añadir)
 
-export default function ProductSelector({fullData, searched}) {
+export default function ProductSelector({setFullData, fullData, searched}) {
 
   const [modalShow, setModalShow] = useState(false);
   const [addToFormulaModalShow, setAddToFormulaModalShow] = useState(false);
+  const [showDangerModal, setShowDangerModal] = useState(false)
   const [modalChangeData, setModalChangeData] = useState("")
+
+  const navigate = useNavigate();
 
   const colSpans = {
       n:{width:"10%"},
@@ -29,6 +36,35 @@ export default function ProductSelector({fullData, searched}) {
   const handleChangeCantidad = (e:any) => {
     setCantidad(e.target.value)
   }
+
+
+  //DANGER MODAL TO REMOVE FORMULA
+  const dangerFunction = ()=>{
+    console.warn("DANGER DANGER", searched)
+    //need to check if the formula to remove is in use in another
+    const newFullData = JSON.parse(JSON.stringify(fullData));
+    navigate("/gestion/buscar")
+    delete newFullData.formulas[searched]
+    setFullData(newFullData)
+  }
+  const extraCheck = ()=>{
+    //is the formula in use in another formula
+    const whereToSearchObject =  JSON.parse(JSON.stringify(fullData.formulas));
+    const eachElementToSearch = Object.keys(whereToSearchObject)
+
+    return eachElementToSearch.map(element=>{
+      const doesItHaveTheFormula = Object.keys(whereToSearchObject[element].components).filter(component=>component===searched)
+      if(doesItHaveTheFormula.length>0){
+        return [element]
+      }
+      else{
+        return
+      }
+    }).filter(ele=>ele)
+
+    //return Object.keys(fullData.formulas).filter(element=>(Object.keys(fullData.formulas[element].components).filter(each=>each==searched)))
+  }
+  // * END OF DANGER MODAL
 
   const calcularPrecio = (formula) => {
     let thisFormula = fullData.formulas[formula]
@@ -112,7 +148,7 @@ export default function ProductSelector({fullData, searched}) {
   
 
   }
-
+  if(fullData.formulas[searched]){
   return (
     <div>
       <h1>{searched}</h1>
@@ -135,7 +171,7 @@ export default function ProductSelector({fullData, searched}) {
       </InputGroup>
       <Button variant="success" onClick={() => console.log("")}>Guardar</Button>
       <Button onClick={() => setAddToFormulaModalShow(true)}>Añadir fila</Button>
-      <Button variant="danger" onClick={() => console.log("")}>Borrar formula</Button>
+      <Button variant="danger" onClick={() => setShowDangerModal(true)}>Borrar formula</Button>
       <MyModal
         show={modalShow}
         onHide={() => setModalShow(false)}
@@ -148,8 +184,19 @@ export default function ProductSelector({fullData, searched}) {
        onHide={() => setAddToFormulaModalShow(false)}
        product={...product}
        setProduct={setProduct}
+       fullData={fullData}
+       searched={searched}
+      />
+      <DangerModal
+      show={showDangerModal}
+      onHide={()=>setShowDangerModal(false)}
+      dangerFunction={dangerFunction}
+      extraCheck={extraCheck}
       />
 
       </div>
   )
+}else{
+  return <></>
+}
 }
