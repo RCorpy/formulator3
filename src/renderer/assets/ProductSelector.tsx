@@ -18,6 +18,11 @@ export default function ProductSelector({setFullData, fullData, searched}) {
   const [addToFormulaModalShow, setAddToFormulaModalShow] = useState(false);
   const [showDangerModal, setShowDangerModal] = useState(false)
   const [modalChangeData, setModalChangeData] = useState("")
+  const [productName, setProductName] = useState(searched)
+  const [showProductNameChange, setShowProductNameChange] = useState(false)
+  const [product, setProduct] = useState(fullData.formulas[searched])
+  const [cantidad, setCantidad] = useState(1)
+
 
   const navigate = useNavigate();
 
@@ -29,14 +34,33 @@ export default function ProductSelector({setFullData, fullData, searched}) {
       precio: {width:'20%'}
     }
 
-  const [product, setProduct] = useState(fullData.formulas[searched])
 
-  const [cantidad, setCantidad] = useState(1)
 
   const handleChangeCantidad = (e:any) => {
     setCantidad(e.target.value)
   }
 
+  const handleChangeNombre = (e:any) => {
+    setProductName(e.target.value)
+  }
+
+  const handleConfirmarProductName = () =>{
+    //comprobar que no existe
+    if(!(fullData.formulas[productName]) && !(fullData.rawMats[productName])){
+    //dejar de comprobar
+    console.log(!(fullData.formulas[productName]), !(fullData.rawMats[productName]))
+    const newFullData = JSON.parse(JSON.stringify(fullData));
+
+    newFullData.formulas[productName] = product
+
+    navigate("/gestion/buscar")
+    delete newFullData.formulas[searched]
+    setFullData(newFullData)
+    }
+    else{
+      setProductName(`${productName} YA EXISTE`)
+    }
+  }
 
   //DANGER MODAL TO REMOVE FORMULA
   const dangerFunction = ()=>{
@@ -151,7 +175,13 @@ export default function ProductSelector({setFullData, fullData, searched}) {
   if(fullData.formulas[searched]){
   return (
     <div>
-      <h1>{searched}</h1>
+      <h1>{searched}<Button onClick={()=>setShowProductNameChange(!showProductNameChange)}>Cambiar Nombre</Button></h1>
+      {showProductNameChange ? 
+      <InputGroup className="mb-3">
+        <InputGroup.Text>Nuevo Nombre</InputGroup.Text>
+        <Form.Control onChange={handleChangeNombre} value={productName}/>
+        <Button onClick={()=>{handleConfirmarProductName()}}>Confirmar</Button>
+      </InputGroup> : <></>}
     <Table striped bordered hover responsive="md">
         <thead>
           <tr>
