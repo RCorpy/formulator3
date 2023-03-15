@@ -48,8 +48,19 @@ export default function ProductSelector({setFullData, fullData, searched}) {
     //comprobar que no existe
     if(!(fullData.formulas[productName]) && !(fullData.rawMats[productName])){
     //dejar de comprobar
-    console.log(!(fullData.formulas[productName]), !(fullData.rawMats[productName]))
     const newFullData = JSON.parse(JSON.stringify(fullData));
+
+    // cambiar el nombre en todas las formulas existentes, mejorable en rendimiento
+    Object.keys(newFullData.formulas).forEach(formula => {
+      Object.keys(newFullData.formulas[formula].components).forEach(key=>{
+        if(key===searched){
+          const newValue = JSON.parse(JSON.stringify(newFullData.formulas[formula].components[searched]));
+          newFullData.formulas[formula].components[productName] = newValue
+          delete newFullData.formulas[formula].components[searched]
+        }
+      })
+    })  
+    // dejar de cambiar nombre en formulas
 
     newFullData.formulas[productName] = product
 
