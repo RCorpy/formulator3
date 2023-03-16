@@ -13,6 +13,7 @@ import GestionNuevo from './assets/GestionNuevo';
 import GestionBuscar from './assets/GestionBuscar';
 import Datos from './assets/Datos';
 import exampleJSON from './assets/exampleJSON'
+import RawMatSelector from './assets/RawMatSelector'
 import './App.css'
 
 function Hello({getJSONData}) {
@@ -88,7 +89,8 @@ export default function App() {
 
           <Route path="/gestion/buscar" element={<GestionBuscar fullData={fullData} setSearched={setSearched} searched={searched}/>} />
           <Route path="/gestion/selector" element={<ProductSelector setFullData={setFullData} fullData={fullData} searched={searched}/>} />
-          
+          <Route path="/gestion/rawselector" element={<RawMatSelector setFullData={setFullData} fullData={fullData} searched={searched}/>} />
+
           <Route path="/gestion/modificar/:id" element={<ProductSelector setFullData={setFullData} fullData={fullData} searched={searched}/>} />
           <Route path="/gestion/eliminar/:id" element={<ProductSelector setFullData={setFullData} fullData={fullData} searched={searched}/>} />
 

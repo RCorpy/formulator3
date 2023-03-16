@@ -21,6 +21,11 @@ export default function GestionBuscar({fullData, setSearched, searched}) {
     navigate("/gestion/selector")
   }
 
+  const handleRawMatVer = (element) =>{
+    setSearched(element)
+    navigate("/gestion/rawselector")
+  }
+
   const makeTableBodyRaws = () => {
 
     let foundRawMaterials = rawMatsArray.filter(element => element.includes(currentSeachTerm.trim()))
@@ -28,9 +33,12 @@ export default function GestionBuscar({fullData, setSearched, searched}) {
     return (<>
       {foundRawMaterials.map(element=>(
       <tr key={element}>
-        <th>
-          {element}
-        </th>
+              <th>
+                {element}
+              </th>
+              <th>
+                <Button onClick={()=>handleRawMatVer(element)}>Ver</Button>
+              </th>
       </tr>))}          
 </>)
   }
@@ -55,9 +63,6 @@ export default function GestionBuscar({fullData, setSearched, searched}) {
 
   return (<>
     <div>GestionBuscar</div>
-    <Button>{searched}</Button>
-    <Button>{currentSeachTerm}</Button>
-
     <InputGroup className="mb-3">
         <InputGroup.Text>busqueda</InputGroup.Text>
         <Form.Control onChange={handleSearchChange}/>
