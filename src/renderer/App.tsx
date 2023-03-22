@@ -85,7 +85,7 @@ export default function App() {
           <Route path="/fabricacion/buscar" element={<ProductSelector setFullData={setFullData} fullData={fullData} searched={searched}/>} />
 
           <Route path="/gestion" element={<Gestion />} />
-          <Route path="/gestion/nuevo" element={<GestionNuevo />} />
+          <Route path="/gestion/nuevo" element={<GestionNuevo fullData={fullData} setFullData={setFullData}/>} />
 
           <Route path="/gestion/buscar" element={<GestionBuscar fullData={fullData} setSearched={setSearched} searched={searched}/>} />
           <Route path="/gestion/selector" element={<ProductSelector setFullData={setFullData} fullData={fullData} searched={searched}/>} />
