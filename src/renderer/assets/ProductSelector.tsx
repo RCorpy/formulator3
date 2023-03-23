@@ -7,6 +7,7 @@ import AddToFormulaModal from './AddToFormulaModal'
 import { Button } from 'react-bootstrap';
 import DangerModal from './DangerModal';
 import { useNavigate } from 'react-router-dom'
+import persistFunc from './persistFunction';
 
 
 
@@ -35,6 +36,16 @@ export default function ProductSelector({setFullData, fullData, searched}) {
     }
 
 
+  const save = () =>{
+    setFullData((prevFullData)=>{
+      let newData = {...prevFullData}
+      newData.formulas[productName] = product
+      return newData
+    })
+    navigate("/gestion/buscar")
+    persistFunc()
+
+  }
 
   const handleChangeCantidad = (e:any) => {
     setCantidad(e.target.value)
@@ -210,7 +221,7 @@ export default function ProductSelector({setFullData, fullData, searched}) {
         <InputGroup.Text>Cantidad</InputGroup.Text>
         <Form.Control type='number' onChange={handleChangeCantidad}/>
       </InputGroup>
-      <Button variant="success" onClick={() => console.log("")}>Guardar</Button>
+      <Button variant="success" onClick={() => save()}>Guardar</Button>
       <Button onClick={() => setAddToFormulaModalShow(true)}>Añadir fila</Button>
       <Button variant="danger" onClick={() => setShowDangerModal(true)}>Borrar formula</Button>
       <MyModal

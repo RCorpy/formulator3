@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Form from 'react-bootstrap/Form';
 import { Button, InputGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'
@@ -10,8 +10,13 @@ export default function GestionBuscar({fullData, setSearched, searched}) {
 
   const navigate = useNavigate();
 
-  const formulasArray = Object.keys(fullData.formulas)
-  const rawMatsArray = Object.keys(fullData.rawMats)
+  let formulasArray = Object.keys(fullData.formulas)
+  let rawMatsArray = Object.keys(fullData.rawMats)
+
+  useEffect(()=>{
+    formulasArray = Object.keys(fullData.formulas)
+    rawMatsArray = Object.keys(fullData.rawMats)
+  },[fullData])
 
   const handleSearchChange = (event:any) => {
     setCurrentSearchTerm(event.target.value)

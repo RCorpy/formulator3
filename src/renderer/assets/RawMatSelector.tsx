@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { Form, Button, InputGroup } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import DangerModal from './DangerModal'
 
 export default function RawMatSelector({setFullData, fullData, searched}) {
 
@@ -9,8 +10,37 @@ export default function RawMatSelector({setFullData, fullData, searched}) {
     const [price, setPrice] = useState(fullData.rawMats[searched].price)
     const [product, setProduct] = useState(fullData.rawMats[searched])
     const [providers, setProviders] = useState(fullData.rawMats[searched].providers)
+    const [showDangerModal, setShowDangerModal] = useState(false)
 
     const navigate = useNavigate();
+
+    //DANGER MODAL TO REMOVE FORMULA
+      const dangerFunction = ()=>{
+        console.warn("DANGER DANGER", searched)
+        //need to check if the formula to remove is in use in another
+        const newFullData = JSON.parse(JSON.stringify(fullData));
+        navigate("/gestion/buscar")
+        delete newFullData.rawMats[searched]
+        setFullData(newFullData)
+      }
+      const extraCheck = ()=>{
+        //is the rawMat in use in another formula
+        const whereToSearchObject =  JSON.parse(JSON.stringify(fullData.formulas));
+        const eachElementToSearch = Object.keys(whereToSearchObject)
+
+        return eachElementToSearch.map(element=>{
+          const doesItHaveTheFormula = Object.keys(whereToSearchObject[element].components).filter(component=>component===searched)
+          if(doesItHaveTheFormula.length>0){
+            return [element]
+          }
+          else{
+            return
+          }
+        }).filter(ele=>ele)
+
+        //return Object.keys(fullData.formulas).filter(element=>(Object.keys(fullData.formulas[element].components).filter(each=>each==searched)))
+      }
+      // * END OF DANGER MODAL
 
     const handleChangeNombre = (event:any)=>{
         setProductName(event.target.value)
@@ -60,6 +90,9 @@ export default function RawMatSelector({setFullData, fullData, searched}) {
         }
     }
 
+    const deleteRawMat = () =>{
+
+    }
 
 
   return (
@@ -81,6 +114,13 @@ export default function RawMatSelector({setFullData, fullData, searched}) {
         </InputGroup>
         <h5>Anteriores: {fullData.rawMats[searched].providers}</h5>
         <Button onClick={()=>{handleConfirmar()}}>Confirmar</Button>
+        <Button onClick={()=>{setShowDangerModal(true)}}>Borrar</Button>
+        <DangerModal
+          show={showDangerModal}
+          onHide={()=>setShowDangerModal(false)}
+          dangerFunction={dangerFunction}
+          extraCheck={extraCheck}
+          />
     </>
   )
 }

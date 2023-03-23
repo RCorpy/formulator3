@@ -9,9 +9,14 @@ export default function addToFormulaModal({show, onHide, product, setProduct, fu
     const [cantidad, setCantidad] = useState(0)
     const [currentSeachTerm, setCurrentSearchTerm] = useState("")
   
-    const formulasArray = Object.keys(fullData.formulas)
-    const rawMatsArray = Object.keys(fullData.rawMats)
+    let formulasArray = Object.keys(fullData.formulas)
+    let rawMatsArray = Object.keys(fullData.rawMats)
   
+    useEffect(()=>{
+      formulasArray = Object.keys(fullData.formulas)
+      rawMatsArray = Object.keys(fullData.rawMats)
+    },[fullData])
+
     const handleSearchChange = (event:any) => {
       setCurrentSearchTerm(event.target.value)
     }

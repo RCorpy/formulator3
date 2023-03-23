@@ -1,20 +1,76 @@
 import React,  {useState} from 'react'
 import {Button, InputGroup, Form, Table} from 'react-bootstrap'
+import AddToFormulaModal from './AddToFormulaModal'
+import { useNavigate } from 'react-router-dom'
+import persistFunc from './persistFunction'
 
 
 export default function GestionNuevo({fullData, setFullData}) {
 
+  const navigate = useNavigate();
+
   const [isFormula, setIsFormula] = useState(false)
+  const [addToFormulaModalShow, setAddToFormulaModalShow] = useState(false);
+  const [showAlert, setShowAlert] = useState(false)
   const [product, setProduct] = useState({
     name:"",
-    components:{"test2":4, "test product": 4}
+    components:{"test2":4, "test product": 4},
+    price:0,
+    providers:""
   })
 
-  const handleNameChange = (event) =>{
-    setProduct((prevProduct)=>({...prevProduct, name:event.target.value}))
+  const handleNameChange = (event, key) =>{
+    setProduct((prevProduct)=>{
+      let newProduct = {...prevProduct}
+      newProduct[key] = event.target.value
+      return newProduct
+    })
+       
+    setShowAlert(false)
   }
 
+  const save = ()=>{
+    const productName = product.name
+    if(productName.length>0){
+      console.log("saving FORMULA")
+      setFullData((prevData)=>{
+        const newData = {...prevData}
+        newData.formulas[productName] = {            
+          components: product.components,
+          kkey: prevData.keyCounter
+        }
+        newData.keyCounter = prevData.keyCounter + 1
+        navigate("/gestion/buscar")
+        persistFunc()
+        return newData
+      })
+    }
+    else{
+      setShowAlert(true)
+    }
+  }
 
+  const saveRawMat = () =>{
+    const productName = product.name
+    if(productName.length>0){
+      console.log("saving RAW MAT")
+      setFullData((prevData)=>{
+        const newData = {...prevData}
+        newData.rawMats[productName] = {
+          kkey: prevData.keyCounter,
+          price: product.price,
+          providers: product.providers
+        }
+        newData.keyCounter = prevData.keyCounter + 1
+        return newData
+      })
+      navigate("/gestion/buscar")
+    }
+    else{
+      setShowAlert(true)
+    }
+
+  }
 
   const makeTableRows = () => {
     let total = 0
@@ -49,8 +105,6 @@ export default function GestionNuevo({fullData, setFullData}) {
         </tr>
       )
     }
-    
-  
   }
   )
 
@@ -68,7 +122,8 @@ export default function GestionNuevo({fullData, setFullData}) {
       formulaCreator
       <InputGroup className="mb-3">
         <InputGroup.Text>Nombre</InputGroup.Text>
-        <Form.Control onChange={handleNameChange} value={product.name}/>
+        <Form.Control onChange={()=>handleNameChange(event, "name")} value={product.name}/>
+        {showAlert ? <InputGroup.Text style={{color: "red"}}>Introduce un nombre</InputGroup.Text> : <></>}
       </InputGroup>
       <Table striped bordered hover responsive="md">
         <thead>
@@ -82,12 +137,40 @@ export default function GestionNuevo({fullData, setFullData}) {
           {makeTableRows()}
         </tbody>
       </Table>
+      <Button onClick={() => setAddToFormulaModalShow(true)}>Añadir fila</Button>
+      <Button variant='success' onClick={() => save()}>Guardar</Button>
+      <Button variant='success' onClick={() => {console.log(fullData)}}>test</Button>
+      <AddToFormulaModal
+       show={addToFormulaModalShow}
+       onHide={() => setAddToFormulaModalShow(false)}
+       product={...product}
+       setProduct={setProduct}
+       fullData={fullData}
+       searched={""}
+      />
     </div>
 
     :
 
     <div className='createRawMat'>
       rawMatCreator
+      <InputGroup className="mb-3">
+        <InputGroup.Text>Nombre</InputGroup.Text>
+        <Form.Control onChange={()=>handleNameChange(event, "name")} value={product.name}/>
+        {showAlert ? <InputGroup.Text style={{color: "red"}}>Introduce un nombre</InputGroup.Text> : <></>}
+      </InputGroup>
+      <InputGroup className="mb-3">
+        <InputGroup.Text>Price</InputGroup.Text>
+        <Form.Control onChange={()=>handleNameChange(event, "price")} value={product.price}/>
+        {showAlert ? <InputGroup.Text style={{color: "red"}}>Introduce un nombre</InputGroup.Text> : <></>}
+      </InputGroup>
+      <InputGroup className="mb-3">
+        <InputGroup.Text>Proveedores</InputGroup.Text>
+        <Form.Control onChange={()=>handleNameChange(event, "providers")} value={product.providers}/>
+        {showAlert ? <InputGroup.Text style={{color: "red"}}>Introduce un nombre</InputGroup.Text> : <></>}
+      </InputGroup>
+      <Button variant='success' onClick={() => saveRawMat()}>Guardar</Button>
+      <Button variant='success' onClick={() => {console.log(product)}}>test</Button>
     </div>}
     
     </>
