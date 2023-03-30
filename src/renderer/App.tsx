@@ -1,10 +1,10 @@
 import { MemoryRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ProductSelector from './assets/ProductSelector';
 import Sidebar from './assets/Sidebar';
-import Menu from './assets/Menu'
+import Menu from './assets/Menu';
 import Fabricacion from './assets/Fabricacion';
 import FabricacionNuevo from './assets/FabricacionNuevo';
 import FabricacionHistorial from './assets/FabricacionHistorial';
@@ -12,12 +12,11 @@ import Gestion from './assets/Gestion';
 import GestionNuevo from './assets/GestionNuevo';
 import GestionBuscar from './assets/GestionBuscar';
 import Datos from './assets/Datos';
-import exampleJSON from './assets/exampleJSON'
-import RawMatSelector from './assets/RawMatSelector'
-import './App.css'
+import exampleJSON from './assets/exampleJSON';
+import RawMatSelector from './assets/RawMatSelector';
+import './App.css';
 
-function Hello({getJSONData}) {
-
+function Hello({ getJSONData }) {
   return (
     <div>
       <Form.Group controlId="formFileMultiple" className="mb-3">
@@ -42,7 +41,7 @@ function Hello({getJSONData}) {
 function Example() {
   return (
     <>
-      {['menu','fabricacion', 'gestion', 'datos'].map((placement, idx) => (
+      {['menu', 'fabricacion', 'gestion', 'datos'].map((placement, idx) => (
         <Sidebar key={idx} menuOption={placement} />
       ))}
     </>
@@ -50,52 +49,117 @@ function Example() {
 }
 
 export default function App() {
-
-  const [fullData, setFullData] = useState(exampleJSON)
-  const [searched, setSearched] = useState("test formula")
+  const [fullData, setFullData] = useState(exampleJSON);
+  const [searched, setSearched] = useState('test formula');
 
   const getJSONData = () => {
     {
-        window.electron.ipcRenderer.sendMessage('getFullSetOfData', []);
+      window.electron.ipcRenderer.sendMessage('getFullSetOfData', []);
     }
-  }
+  };
   window.electron.ipcRenderer.once('getFullSetOfData', (recievedData) => {
     // eslint-disable-next-line no-console
-    setFullData(recievedData)
+    setFullData(recievedData);
     console.log(fullData);
   });
 
-  useEffect(()=>{
-    getJSONData()
-  },[])
-
+  useEffect(() => {
+    getJSONData();
+  }, []);
 
   return (
     <>
       <Router>
         {Example()}
         <Routes>
-          <Route path="/" element={<Hello getJSONData={getJSONData}/>} />
+          <Route path="/" element={<Hello getJSONData={getJSONData} />} />
 
           <Route path="/menu" element={<Menu />} />
 
-          <Route path="/fabricacion" element={<Fabricacion fullData={fullData}/>} />
+          <Route
+            path="/fabricacion"
+            element={<Fabricacion fullData={fullData} />}
+          />
           <Route path="/fabricacion/nuevo" element={<FabricacionNuevo />} />
-          <Route path="/fabricacion/historial" element={<FabricacionHistorial />} />
-          <Route path="/fabricacion/buscar" element={<ProductSelector setFullData={setFullData} fullData={fullData} searched={searched}/>} />
+          <Route
+            path="/fabricacion/historial"
+            element={<FabricacionHistorial />}
+          />
+          <Route
+            path="/fabricacion/buscar"
+            element={
+              <ProductSelector
+                setFullData={setFullData}
+                fullData={fullData}
+                searched={searched}
+              />
+            }
+          />
 
           <Route path="/gestion" element={<Gestion />} />
-          <Route path="/gestion/nuevo" element={<GestionNuevo fullData={fullData} setFullData={setFullData}/>} />
+          <Route
+            path="/gestion/nuevo"
+            element={
+              <GestionNuevo fullData={fullData} setFullData={setFullData} />
+            }
+          />
 
-          <Route path="/gestion/buscar" element={<GestionBuscar fullData={fullData} setSearched={setSearched} searched={searched}/>} />
-          <Route path="/gestion/selector" element={<ProductSelector setFullData={setFullData} fullData={fullData} searched={searched}/>} />
-          <Route path="/gestion/rawselector" element={<RawMatSelector setFullData={setFullData} fullData={fullData} searched={searched}/>} />
+          <Route
+            path="/gestion/buscar"
+            element={
+              <GestionBuscar
+                fullData={fullData}
+                setSearched={setSearched}
+                searched={searched}
+              />
+            }
+          />
+          <Route
+            path="/gestion/selector"
+            element={
+              <ProductSelector
+                setFullData={setFullData}
+                fullData={fullData}
+                searched={searched}
+              />
+            }
+          />
+          <Route
+            path="/gestion/rawselector"
+            element={
+              <RawMatSelector
+                setFullData={setFullData}
+                fullData={fullData}
+                searched={searched}
+              />
+            }
+          />
 
-          <Route path="/gestion/modificar/:id" element={<ProductSelector setFullData={setFullData} fullData={fullData} searched={searched}/>} />
-          <Route path="/gestion/eliminar/:id" element={<ProductSelector setFullData={setFullData} fullData={fullData} searched={searched}/>} />
+          <Route
+            path="/gestion/modificar/:id"
+            element={
+              <ProductSelector
+                setFullData={setFullData}
+                fullData={fullData}
+                searched={searched}
+              />
+            }
+          />
+          <Route
+            path="/gestion/eliminar/:id"
+            element={
+              <ProductSelector
+                setFullData={setFullData}
+                fullData={fullData}
+                searched={searched}
+              />
+            }
+          />
 
-          <Route path="/datos" element={<Datos />} />
-          
+          <Route
+            path="/datos"
+            element={<Datos fullData={fullData} setFullData={setFullData} />}
+          />
         </Routes>
       </Router>
     </>

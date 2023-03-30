@@ -14,8 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import fs from 'fs'
-
+import fs from 'fs';
 
 class AppUpdater {
   constructor() {
@@ -28,27 +27,30 @@ class AppUpdater {
 let mainWindow: BrowserWindow | null = null;
 
 ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg.hello));
+  console.log('THIS IS THE ARG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', arg);
+  console.log('end of arg');
 
-  var dict = {"one" : [15, 4.5],
-            "two" : [34, 3.3],
-            "three" : [67, 5.0],
-            "four" : [32, 4.1]};
+  let jsonString = JSON.stringify(arg);
+  fs.writeFileSync('jsondb.json', jsonString);
 
-  let jsonString = JSON.stringify(dict);
-  fs.writeFileSync("thing.json", jsonString)
+  event.reply('ipc-example', 'pong');
+});
 
-  event.reply('ipc-example', msgTemplate('pong'));
+ipcMain.on('newSaveData', async (event, arg) => {
+  console.log('will save new data');
+
+  //let jsonString = JSON.stringify(arg);
+  //fs.writeFileSync('jsondb.json', jsonString);
+
+  event.reply('ipc-example', 'pong');
 });
 
 ipcMain.on('getFullSetOfData', async (event, arg) => {
-
-  const jsonDB = JSON.parse(fs.readFileSync("jsondb.json",'utf8'))
+  const jsonDB = JSON.parse(fs.readFileSync('jsondb.json', 'utf8'));
   //fs.writeFileSync("thing.json", jsonString)
-  console.log(jsonDB)
+  console.log(jsonDB);
 
-  event.reply('getFullSetOfData',jsonDB)
+  event.reply('getFullSetOfData', jsonDB);
   //event.reply('ipc-example', msgTemplate('pong'));
 });
 
