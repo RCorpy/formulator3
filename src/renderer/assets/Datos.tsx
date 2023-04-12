@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import DangerModal from './DangerModal';
+import DangerModalDatos from './DangerModalDatos';
 
 export default function Datos({ fullData, setFullData }) {
   const [showDangerModal, setShowDangerModal] = useState(false);
 
   const loadSavedData = () => {
+    setShowDangerModal(true);
     console.log('load saved data');
   };
 
@@ -18,8 +19,7 @@ export default function Datos({ fullData, setFullData }) {
       <h1>Datos</h1>
       <Button onClick={saveFullData}>Guardar</Button>
       <Button onClick={loadSavedData}>Importar</Button>
-      <Button onClick={() => setShowDangerModal(true)}>showmodal</Button>
-      <DangerModal
+      <DangerModalDatos
         show={showDangerModal}
         onHide={() => setShowDangerModal(false)}
         dangerFunction={() => {

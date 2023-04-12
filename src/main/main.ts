@@ -54,6 +54,21 @@ ipcMain.on('getFullSetOfData', async (event, arg) => {
   //event.reply('ipc-example', msgTemplate('pong'));
 });
 
+ipcMain.on('getSavedFiles', async (event, arg) => {
+  //getting saved files
+
+  const CWD = process.cwd();
+  fs.readdir(`${CWD}/savedjsons`, function (err, files) {
+    if (err) {
+      return console.log('Unable to scan directory: ' + err);
+    } else {
+      event.reply('sendSavedFiles', files);
+    }
+  });
+
+  //event.reply('ipc-example', msgTemplate('pong'));
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
