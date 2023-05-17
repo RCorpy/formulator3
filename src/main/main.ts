@@ -26,6 +26,13 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
+ipcMain.on('restoreSavedData', async (event, arg) => {
+  fs.copyFile(`./savedjsons/${arg}`, 'jsondb.json', (err) => {
+    if (err) throw err;
+    console.log('jsondb.json was copied to destination.json');
+  });
+});
+
 ipcMain.on('ipc-example', async (event, arg) => {
   console.log('THIS IS THE ARG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', arg);
   console.log('end of arg');
@@ -38,6 +45,20 @@ ipcMain.on('ipc-example', async (event, arg) => {
 
 ipcMain.on('newSaveData', async (event, arg) => {
   console.log('will save new data');
+
+  const date = new Date();
+
+  const year = date.getFullYear();
+  const month =
+    date.getMonth() < 9 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+  const day = date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
+
+  const filename = `${year}${month}${day}`;
+
+  fs.copyFile('jsondb.json', `./savedjsons/${filename}.json`, (err) => {
+    if (err) throw err;
+    console.log('jsondb.json was copied to destination.json');
+  });
 
   //let jsonString = JSON.stringify(arg);
   //fs.writeFileSync('jsondb.json', jsonString);

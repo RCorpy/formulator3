@@ -14,7 +14,14 @@ export default function DangerModalDatos({
   const [jsonOption, setJsonOption] = useState('');
 
   const handleAceptar = () => {
+    onHide();
+    window.electron.ipcRenderer.sendMessage('restoreSavedData', jsonOption);
     console.log('aceptando');
+  };
+
+  const handleBorrar = () => {
+    onHide();
+    console.log('borrando');
   };
 
   window.electron.ipcRenderer.once('sendSavedFiles', (recievedSavedFiles) => {
@@ -59,8 +66,11 @@ export default function DangerModalDatos({
         </Form.Select>
       </Modal.Body>
       <Modal.Footer>
+        <Button variant="success" onClick={() => handleAceptar()}>
+          Importar
+        </Button>
         <Button onClick={() => onHide()}>Cancelar</Button>
-        <Button variant="danger" onClick={() => handleAceptar()}>
+        <Button variant="danger" onClick={() => handleBorrar()}>
           Borrar
         </Button>
       </Modal.Footer>
