@@ -61,7 +61,9 @@ export default function DangerModalDatos({
           onChange={(e) => setJsonOption(e.target.value)}
         >
           {savedFiles.map((element) => (
-            <option value={element}>{elementToDate(element)}</option>
+            <option value={element} key={element}>
+              {elementToDate(element)}
+            </option>
           ))}
         </Form.Select>
       </Modal.Body>
