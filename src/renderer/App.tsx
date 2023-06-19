@@ -80,7 +80,11 @@ export default function App() {
             path="/fabricacion"
             element={<Fabricacion fullData={fullData} />}
           />
-          <Route path="/fabricacion/nuevo" element={<FabricacionNuevo />} />
+          <Route path="/fabricacion/nuevo" element={
+          <FabricacionNuevo 
+          fullData={fullData}
+          setFullData={setFullData}
+          />} />
           <Route
             path="/fabricacion/historial"
             element={<FabricacionHistorial />}
