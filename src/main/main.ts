@@ -43,6 +43,38 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', 'pong');
 });
 
+ipcMain.on('registrar', async (event, arg) => {
+  console.log("registrando", arg)
+  
+  let registro = arg.registro
+  let cantidad = arg.cantidad
+  let product = arg.product
+
+  const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
+  if(registroDB[registro] && registroDB[registro].name){
+    console.log("registro", registroDB[registro])
+    console.log("cantidad", cantidad)
+    console.log("registro", registro)
+    console.log("product", product)
+    event.reply("existe-registro")
+  }
+  else{
+    registroDB[registro] = {
+      "name": product.name,
+      "cantidad": cantidad,
+      "components": product.components
+    }
+    let jsonString = JSON.stringify(registroDB);
+    fs.writeFileSync('registrodb.json', jsonString);
+    event.reply('registro-completo');
+  }
+  
+  
+  
+
+  
+});
+
 ipcMain.on('newSaveData', async (event, arg) => {
   console.log('will save new data');
 

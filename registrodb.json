@@ -1,0 +1,18 @@
+{
+    "0": {
+        "name": "test product2",
+        "cantidad": 1,
+        "components": {}
+    },
+    "4": {
+        "name": "test product2",
+        "cantidad": "2",
+        "components": {}
+    },
+    "15": {},
+    "undefined": {
+        "name": "test product",
+        "cantidad": 1,
+        "components": {}
+    }
+}

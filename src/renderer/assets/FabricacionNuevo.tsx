@@ -16,9 +16,7 @@ export default function FabricacionNuevo({ fullData, setFullData }) {
   const [registro, setRegistro] = useState(getRecord());
   const [product, setProduct] = useState({
     name: '',
-    components: { test2: 4, 'test product': 4 },
-    price: 0,
-    providers: '',
+    components: {},
   });
 
 
@@ -30,15 +28,25 @@ export default function FabricacionNuevo({ fullData, setFullData }) {
   };
 
   const escribirRegistro = (product, cantidad, registro) => {
-    console.log('registering:', product.name, cantidad, registro);
+    window.electron.ipcRenderer.sendMessage('registrar', {"product": product, "registro":registro, "cantidad":cantidad})
   };
 
+  window.electron.ipcRenderer.once('existe-registro', () => {
+    // eslint-disable-next-line no-console
+    console.log("existe-registro");
+  });
+
+  window.electron.ipcRenderer.once('registro-completo', () => {
+    // eslint-disable-next-line no-console
+    console.log("registro-completo");
+  });
+
   const handleRegistro = (event) => {
-    setRegistro(event.value)
+    setRegistro(event.target.value)
   };
 
   const handleCantidad = (event) => {
-    setCantidad(event.value)
+    setCantidad(event.target.value)
   };
 
   const handleSeleccionarProducto = () => {

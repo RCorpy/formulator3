@@ -15,9 +15,13 @@ export default function GetProductModal({show, onHide, fullData, setProduct}) {
     rawMatsArray = Object.keys(fullData.rawMats)
   },[fullData])
 
-  const settingResult = (element) =>{
-    console.log(element)
-    //setProduct(element)
+  const settingResult = (elementName: string, element: any) =>{
+    let newProduct = {
+      name: elementName,
+      components: (element.components ? element.components : {})
+    }
+    setProduct(newProduct)
+    onHide()
   }
 
   const makeTableBodyFormulas = () => {
@@ -32,7 +36,7 @@ export default function GetProductModal({show, onHide, fullData, setProduct}) {
                 {element}
               </th>
               <th>
-                <Button onClick={()=>settingResult(fullData.formulas[element])}>Ver</Button>
+                <Button onClick={()=>settingResult(element, fullData.formulas[element])}>Ver</Button>
               </th>
             </tr>))}          
     </>)
@@ -49,7 +53,7 @@ export default function GetProductModal({show, onHide, fullData, setProduct}) {
                 {element}
               </th>
               <th>
-                <Button onClick={()=>settingResult(fullData.rawMats[element])}>Ver</Button>
+                <Button onClick={()=>settingResult(element, fullData.rawMats[element])}>Ver</Button>
               </th>
       </tr>))}          
 </>)
@@ -83,10 +87,7 @@ export default function GetProductModal({show, onHide, fullData, setProduct}) {
         </tbody>
       </Table>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="success" >Guardar</Button>
-        <Button variant="danger" onClick={()=>onHide()}>Cerrar</Button>
-      </Modal.Footer>
+
     </Modal>
   );
 }
