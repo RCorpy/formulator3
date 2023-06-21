@@ -1,18 +1,46 @@
 {
     "0": {
-        "name": "test product2",
-        "cantidad": 1,
-        "components": {}
+        "test product2": {
+            "cantidad": 1,
+            "components": {}
+        },
+        "test131": {
+            "cantidad": "4",
+            "components": {}
+        }
     },
-    "4": {
-        "name": "test product2",
-        "cantidad": "2",
-        "components": {}
+    "1": {
+        "test product2": {
+            "cantidad": "3",
+            "components": {}
+        }
     },
-    "15": {},
-    "undefined": {
-        "name": "test product",
-        "cantidad": 1,
-        "components": {}
+    "2": {
+        "test131": {
+            "cantidad": "4",
+            "components": {}
+        }
+    },
+    "3": {
+        "test2": {
+            "cantidad": "3",
+            "components": {
+                "test product": "1"
+            }
+        }
+    },
+    "5": {
+        "test3": {
+            "cantidad": "4",
+            "components": {
+                "test product": "1",
+                "test2": "5"
+            }
+        }
     }
 }
+
+
+AUTOMATIZAR NUMEROS DE REGISTRO
+IR A REGISTRO EN CONCRETO DENTRO DE HISTORIAL
+HACER HISTORIAL DE REGISTROS

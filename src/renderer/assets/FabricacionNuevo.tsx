@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, InputGroup, Form, Table } from 'react-bootstrap';
 import GetProductModal from './getProductModal';
 import { useNavigate } from 'react-router-dom';
-import persistFunc from './persistFunction';
+import AddOrCancelModal from './AddOrCancelModal';
 
 export default function FabricacionNuevo({ fullData, setFullData }) {
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ export default function FabricacionNuevo({ fullData, setFullData }) {
     return 0
   }
 
+  const [showAddOrCancelModal, setShowAddOrCancelModal]=useState(false)
   const [showAlert, setShowAlert] = useState(false);
   const [cantidad, setCantidad] = useState(1);
   const [registro, setRegistro] = useState(getRecord());
@@ -23,9 +24,14 @@ export default function FabricacionNuevo({ fullData, setFullData }) {
   const handleAceptar = () => {
     if(product.name !== ''){
       escribirRegistro(product, cantidad, registro);
-      navigate('/fabricacion/historial');
+      //navigate('/fabricacion/historial');
     }
   };
+
+  const handleSuperposeRegistro = () =>{
+    window.electron.ipcRenderer.sendMessage('add-to-registro', {"product": product, "registro":registro, "cantidad":cantidad})
+    setShowAddOrCancelModal(false)
+  }
 
   const escribirRegistro = (product, cantidad, registro) => {
     window.electron.ipcRenderer.sendMessage('registrar', {"product": product, "registro":registro, "cantidad":cantidad})
@@ -34,6 +40,7 @@ export default function FabricacionNuevo({ fullData, setFullData }) {
   window.electron.ipcRenderer.once('existe-registro', () => {
     // eslint-disable-next-line no-console
     console.log("existe-registro");
+    setShowAddOrCancelModal(true)
   });
 
   window.electron.ipcRenderer.once('registro-completo', () => {
@@ -82,6 +89,11 @@ export default function FabricacionNuevo({ fullData, setFullData }) {
       onHide={()=>setShowAlert(false)}
       fullData={fullData}
       setProduct={setProduct}
+      />
+      <AddOrCancelModal
+      show={showAddOrCancelModal}
+      onHide={()=>setShowAddOrCancelModal(false)}
+      onAccept={()=>handleSuperposeRegistro()}
       />
     </>
   );
