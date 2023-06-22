@@ -17,7 +17,7 @@ export default function FabricacionHistorial() {
   });
 
   useEffect(() => getFullRegistro(), []);
-  useEffect(() => getVisibleRows(), [fullRegistro]);
+  //useEffect(() => getVisibleRows(), [fullRegistro]);
 
   const getFullRegistro = () => {
     window.electron.ipcRenderer.sendMessage(
@@ -30,6 +30,7 @@ export default function FabricacionHistorial() {
     });
   };
 
+
   const getVisibleRows = (page) => {
     let lastRegistro = fullRegistro.lastnumber;
 
@@ -39,33 +40,51 @@ export default function FabricacionHistorial() {
     let recordsToShowArray = [];
 
     do {
-      currentRegistro = currentRegistro - 1;
       if (fullRegistro[currentRegistro]) {
-        console.log('found', fullRegistro[currentRegistro]);
-        recordsToShowArray.unshift([
-          currentRegistro,
-          fullRegistro[currentRegistro],
-        ]);
-      }
-      console.log(`currentRegistro: ${currentRegistro}`);
-    } while (currentRegistro > 0);
-
-    console.warn(recordsToShowArray);
-    /*while (currentRegistro >= 0) {
-      currentRegistro = currentRegistro - 1;
-      if (fullRegistro[currentRegistro]) {
-        recordsToShowArray = recordsToShowArray.unshift(
-          fullRegistro[currentRegistro]
+        
+        recordsToShowArray.unshift({
+          ...fullRegistro[currentRegistro],
+          registro: currentRegistro}
         );
       }
-    }*/
+      currentRegistro = currentRegistro - 1;
+      
+    } 
+    while (currentRegistro >= 0 && recordsToShowArray.length<amountPerPage);
+
+    console.warn(recordsToShowArray);
+
+    return recordsToShowArray.map((record)=>{
+      let duplicateRecord = {...record}
+      //remove whatever isnt products
+      delete duplicateRecord.registro
+
+      //get keys of products
+      let productsArray = Object.keys(duplicateRecord)
+      return (
+        <>
+          {productsArray.map((product=>(
+          <>
+            <tr onClick={()=>console.log(record.registro)}>
+              <th>{record.registro}</th>
+              <th>
+                {record[product].cantidad}
+              </th>
+              <th>
+                {product}
+              </th>
+            </tr>
+          </>
+            )))}
+          
+        </>)})
   };
 
   return (
     <>
       <div>FabricacionHistorial</div>
       <Table striped bordered hover responsive="md">
-        <tbody></tbody>
+        <tbody>{getVisibleRows(0)}</tbody>
       </Table>
     </>
   );
