@@ -43,23 +43,37 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', 'pong');
 });
 
+ipcMain.on('get-last-registro', async (event, arg) => {
+  const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
+
+  event.reply('got-last-registro', registroDB.lastnumber + 1);
+});
+
+ipcMain.on('get-full-registro', async (event, arg) => {
+  const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
+
+  event.reply('got-full-registro', registroDB);
+});
+
 ipcMain.on('registrar', async (event, arg) => {
-  console.log("registrando", arg)
-  
-  let registro = arg.registro
-  let cantidad = arg.cantidad
-  let product = arg.product
+  console.log('registrando', arg);
+
+  let registro = arg.registro;
+  let cantidad = arg.cantidad;
+  let product = arg.product;
 
   const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
 
-  if(registroDB[registro]){
-    event.reply("existe-registro")
-  }
-  else{
-    registroDB[registro]={}
+  if (registroDB[registro]) {
+    event.reply('existe-registro');
+  } else {
+    registroDB[registro] = {};
     registroDB[registro][product.name] = {
-        "cantidad": cantidad,
-        "components": product.components
+      cantidad: cantidad,
+      components: product.components,
+    };
+    if (registroDB.lastnumber < Number(registro)) {
+      registroDB.lastnumber = Number(registro);
     }
     let jsonString = JSON.stringify(registroDB);
     fs.writeFileSync('registrodb.json', jsonString);
@@ -68,24 +82,22 @@ ipcMain.on('registrar', async (event, arg) => {
 });
 
 ipcMain.on('add-to-registro', async (event, arg) => {
+  console.log('forzando registro');
 
-  console.log("forzando registro")
-
-  let registro = arg.registro
-  let cantidad = arg.cantidad
-  let product = arg.product
+  let registro = arg.registro;
+  let cantidad = arg.cantidad;
+  let product = arg.product;
 
   const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
 
-    registroDB[registro][product.name] = {
-        "cantidad": cantidad,
-        "components": product.components
-    }
-    let jsonString = JSON.stringify(registroDB);
-    fs.writeFileSync('registrodb.json', jsonString);
-    event.reply('registro-completo');
-  }
-);
+  registroDB[registro][product.name] = {
+    cantidad: cantidad,
+    components: product.components,
+  };
+  let jsonString = JSON.stringify(registroDB);
+  fs.writeFileSync('registrodb.json', jsonString);
+  event.reply('registro-completo');
+});
 
 ipcMain.on('newSaveData', async (event, arg) => {
   console.log('will save new data');
