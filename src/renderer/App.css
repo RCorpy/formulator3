@@ -10333,6 +10333,10 @@ a.text-dark:hover, a.text-dark:focus {
 .registromenu {
   display: flex;
   justify-content: space-around;
+  margin-top: 10px;
+  font-weight: 700;
+  font-size:xx-large;
+  margin-bottom: 30px;
 }
 .registropie{
   display:flex;
@@ -10341,5 +10345,28 @@ a.text-dark:hover, a.text-dark:focus {
 .registroproductheader {
   display: flex;
   justify-content: space-around;
+  font-weight: 700;
+  font-size: larger;
+  margin-bottom: 15px;
+}
+
+.productline{
+  font-weight: 500;
+}
+
+.printablediv {
+  visibility: hidden;
+}
+
+@media print {
+  body {
+    visibility: hidden;
+  }
+  .printablediv {
+    visibility: visible;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }
 /*# sourceMappingURL=bootstrap.css.map */

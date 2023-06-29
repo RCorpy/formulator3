@@ -61,6 +61,14 @@ ipcMain.on('get-this-registro', async (event, arg) => {
   event.reply('got-this-registro', registroDB[arg]);
 });
 
+ipcMain.on('delete-this-registro', async (event, arg) => {
+  let registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
+  delete registroDB[arg]
+  let jsonString = JSON.stringify(registroDB);
+  fs.writeFileSync('registrodb.json', jsonString);
+  event.reply('deleted-this-registro');
+});
+
 ipcMain.on('registrar', async (event, arg) => {
   console.log('registrando', arg);
 

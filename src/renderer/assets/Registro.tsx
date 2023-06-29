@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Button, Table } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function Registro() {
   let { id } = useParams();
+
+  const navigate = useNavigate()
 
   const [registro, setRegistro] = useState({
     'test product2': {
@@ -24,6 +26,20 @@ export default function Registro() {
     });
   }, []);
 
+  const eliminarRegistro = () => {
+    
+    window.electron.ipcRenderer.sendMessage('delete-this-registro', id)
+    navigate('/fabricacion')
+  }
+
+  //IMPRIMIR FUNCTION
+
+  function printElem(){
+    window.print()
+  
+}
+  // END OF IMRPIMIR
+
   const showRegistroCuerpo = () => {
     let productos = Object.keys(registro);
 
@@ -37,9 +53,10 @@ export default function Registro() {
             </div>
             <Table>
               {Object.keys(registro[producto].components).map((component) => (
-                <>
-                  {component}: {registro[producto].components[component]}
-                </>
+                <tr>
+                  <th className='productline'>{component}</th>
+                  <th className='productline'>{registro[producto].components[component]*registro[producto].cantidad}</th>
+                </tr>
               ))}
             </Table>
           </>
@@ -52,11 +69,14 @@ export default function Registro() {
     <>
       <div className="registromenu">
         <div>Registro: {id} </div>
-        <Button>Imprimir</Button>
+        <Button onClick={()=>printElem()}>Imprimir</Button>
       </div>
       <div className="registrocuerpo">{showRegistroCuerpo()}</div>
       <div className="registropie">
-        <Button variant="danger">Eliminar</Button>
+        <Button onClick={()=>eliminarRegistro()} variant="danger">Eliminar Registro</Button>
+      </div>
+      <div  className='printablediv'>
+        THIS WILL PRINT
       </div>
     </>
   );
