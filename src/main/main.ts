@@ -55,12 +55,23 @@ ipcMain.on('get-full-registro', async (event, arg) => {
   event.reply('got-full-registro', registroDB);
 });
 
+ipcMain.on('get-this-registro', async (event, arg) => {
+  const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
+
+  event.reply('got-this-registro', registroDB[arg]);
+});
+
 ipcMain.on('registrar', async (event, arg) => {
   console.log('registrando', arg);
 
   let registro = arg.registro;
   let cantidad = arg.cantidad;
   let product = arg.product;
+
+  let today = new Date();
+  let date = `${today.getDate()}-${
+    today.getMonth() + 1
+  }-${today.getFullYear()}`;
 
   const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
 
@@ -71,6 +82,7 @@ ipcMain.on('registrar', async (event, arg) => {
     registroDB[registro][product.name] = {
       cantidad: cantidad,
       components: product.components,
+      date: date,
     };
     if (registroDB.lastnumber < Number(registro)) {
       registroDB.lastnumber = Number(registro);
@@ -84,6 +96,11 @@ ipcMain.on('registrar', async (event, arg) => {
 ipcMain.on('add-to-registro', async (event, arg) => {
   console.log('forzando registro');
 
+  let today = new Date();
+  let date = `${today.getDate()}-${
+    today.getMonth() + 1
+  }-${today.getFullYear()}`;
+
   let registro = arg.registro;
   let cantidad = arg.cantidad;
   let product = arg.product;
@@ -93,6 +110,7 @@ ipcMain.on('add-to-registro', async (event, arg) => {
   registroDB[registro][product.name] = {
     cantidad: cantidad,
     components: product.components,
+    date: date,
   };
   let jsonString = JSON.stringify(registroDB);
   fs.writeFileSync('registrodb.json', jsonString);

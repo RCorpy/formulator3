@@ -14,6 +14,7 @@ import GestionBuscar from './assets/GestionBuscar';
 import Datos from './assets/Datos';
 import exampleJSON from './assets/exampleJSON';
 import RawMatSelector from './assets/RawMatSelector';
+import Registro from './assets/Registro';
 import './App.css';
 
 function Hello({ getJSONData }) {
@@ -80,15 +81,17 @@ export default function App() {
             path="/fabricacion"
             element={<Fabricacion fullData={fullData} />}
           />
-          <Route path="/fabricacion/nuevo" element={
-          <FabricacionNuevo 
-          fullData={fullData}
-          setFullData={setFullData}
-          />} />
+          <Route
+            path="/fabricacion/nuevo"
+            element={
+              <FabricacionNuevo fullData={fullData} setFullData={setFullData} />
+            }
+          />
           <Route
             path="/fabricacion/historial"
             element={<FabricacionHistorial />}
           />
+          <Route path="/gestion/registro/:id" element={<Registro />} />
           <Route
             path="/fabricacion/buscar"
             element={

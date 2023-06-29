@@ -10329,4 +10329,17 @@ a.text-dark:hover, a.text-dark:focus {
     border-color: #dee2e6;
   }
 }
+
+.registromenu {
+  display: flex;
+  justify-content: space-around;
+}
+.registropie{
+  display:flex;
+  justify-content: flex-end;
+}
+.registroproductheader {
+  display: flex;
+  justify-content: space-around;
+}
 /*# sourceMappingURL=bootstrap.css.map */
