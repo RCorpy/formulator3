@@ -59,6 +59,24 @@ ipcMain.on('get-this-registro', async (event, arg) => {
   const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
 
   event.reply('got-this-registro', registroDB[arg]);
+
+  // aqui deberia sacar refs
+});
+
+ipcMain.on('get-refs', async (event, arg:Array) => {
+  const jsonDB = JSON.parse(fs.readFileSync('jsondb.json', 'utf8'));
+
+  const returnArray = []
+  arg.forEach(element => {
+    if(jsonDB.rawMats[element]){
+      returnArray.unshift(jsonDB.rawMats[element].kkey)
+    }
+    if(jsonDB.formulas[element]){
+      jsonDB.formulas[element].kkey
+    }
+  });
+  
+  event.reply('got-refs', returnArray);
 });
 
 ipcMain.on('delete-this-registro', async (event, arg) => {

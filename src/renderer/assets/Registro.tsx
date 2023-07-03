@@ -7,6 +7,7 @@ export default function Registro() {
 
   const navigate = useNavigate()
 
+  const [kkeys, setKkeys] = useState([5645])
   const [registro, setRegistro] = useState({
     'test product2': {
       cantidad: 1,
@@ -32,12 +33,71 @@ export default function Registro() {
     navigate('/fabricacion')
   }
 
+  const getFecha = () => {
+    let today = new Date();
+    return `${today.getDate()}-${
+      today.getMonth() + 1
+    }-${today.getFullYear()}`;
+}
+
   //IMPRIMIR FUNCTION
 
-  function printElem(){
+  const printElem = ()=> {
     window.print()
   
 }
+
+  const getTableRows = (producto) =>{
+
+    const thisProductComponents = Object.keys(registro[producto].components)
+
+    window.electron.ipcRenderer.sendMessage('get-refs', thisProductComponents);
+    window.electron.ipcRenderer.once('got-refs', (recievedData) => {
+      // eslint-disable-next-line no-console
+      setKkeys(recievedData);
+    });
+    console.log(kkeys)
+    //map con index para las referencias
+    return thisProductComponents.map((component) => {
+      return (
+      <>
+        <div className='printtablerow'>
+            <div className='printref'>{kkeys[0]}</div>
+            <div className='printnombre'>{component}</div>
+            <div className='printheadercantidad'>{registro[producto].components[component]*registro[producto].cantidad}</div>
+        </div>
+      </>
+    )})
+  }
+
+  const imprimirRegistroCuerpo = () =>{
+    let productos = Object.keys(registro)
+
+    return (
+      <>
+        {productos.map((producto)=>(
+          <>
+          <div className='printheaderdos'>
+              <div className='printproduct'>{producto}</div>
+              <div className='printcantidad'>{registro[producto].cantidad} Kgs</div>
+          </div>
+          <div className='printtable'>
+            <div className='printtableheader'>
+                <div className='printref'>Ref</div>
+                <div className='printnombre'>Nombre</div>
+                <div className='printheadercantidad'>Cantidad</div>
+            </div>
+            {getTableRows(producto)}
+            
+          </div>
+          </>
+        ))
+        }
+          
+      </>
+    )
+  }
+
   // END OF IMRPIMIR
 
   const showRegistroCuerpo = () => {
@@ -76,8 +136,12 @@ export default function Registro() {
         <Button onClick={()=>eliminarRegistro()} variant="danger">Eliminar Registro</Button>
       </div>
       <Button onClick={()=>navigate('/print')}>PRINT SCREEN</Button>
-      <div  className='printablediv'>
-        THIS WILL PRINT
+      <div  className='printablediv showprintable'>
+        <div className='printheader'>
+              <div className='printregistro'>Registro: {id}</div>
+              <div className='printfecha'>{getFecha()}</div>
+          </div>
+      {imprimirRegistroCuerpo()}
       </div>
     </>
   );

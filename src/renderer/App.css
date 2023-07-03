@@ -10371,7 +10371,6 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .showprintable {
-  visibility: visible;
   position: absolute;
   left: 0;
   top: 0;
