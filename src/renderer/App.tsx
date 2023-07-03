@@ -15,6 +15,7 @@ import Datos from './assets/Datos';
 import exampleJSON from './assets/exampleJSON';
 import RawMatSelector from './assets/RawMatSelector';
 import Registro from './assets/Registro';
+import PrintScreen from './assets/PrintScreen';
 import './App.css';
 
 function Hello({ getJSONData }) {
@@ -76,6 +77,11 @@ export default function App() {
           <Route path="/" element={<Hello getJSONData={getJSONData} />} />
 
           <Route path="/menu" element={<Menu />} />
+
+          <Route
+            path="/print"
+            element={<PrintScreen />}
+          />
 
           <Route
             path="/fabricacion"

@@ -10369,4 +10369,73 @@ a.text-dark:hover, a.text-dark:focus {
     top: 0;
   }
 }
+
+.showprintable {
+  visibility: visible;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 21cm;
+  height: 29.7cm; 
+  border: solid #5B6DCD 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.printheader{
+  background-color: #7abaff;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 8%;
+  margin-right: 8%;
+}
+
+.printheaderdos{
+  background-color: #7abaff;
+  display: flex;
+  justify-content: space-between;
+  font-size: x-large;
+  margin-left: 8%;
+  margin-right: 8%;
+  font-weight: 700;
+
+}
+.printtable{
+  border-top: solid black 3px;
+  background-color: #1c7430;
+  margin-left: 3%;
+  margin-right: 3%;
+  flex: 1;
+}
+
+.printtableheader{
+  font-size:larger;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  font-weight: 700;
+  border-bottom: solid black 1px;
+  
+}
+.printref{
+  flex:1;
+  
+  
+}
+.printnombre{
+  flex:5;
+  padding-left: 10px;
+}
+.printheadercantidad{
+  flex:1;
+}
+
+.printtablerow{
+  font-size: large;
+  display: flex;
+  padding-top: 2px;
+}
+.printfooter{
+  background-color: #ffc107;
+}
 /*# sourceMappingURL=bootstrap.css.map */

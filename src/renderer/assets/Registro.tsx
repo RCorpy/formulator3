@@ -75,6 +75,7 @@ export default function Registro() {
       <div className="registropie">
         <Button onClick={()=>eliminarRegistro()} variant="danger">Eliminar Registro</Button>
       </div>
+      <Button onClick={()=>navigate('/print')}>PRINT SCREEN</Button>
       <div  className='printablediv'>
         THIS WILL PRINT
       </div>
