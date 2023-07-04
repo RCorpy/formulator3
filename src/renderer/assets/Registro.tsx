@@ -47,16 +47,17 @@ export default function Registro() {
     window.print();
   };
 
-  const getTableRows = (producto) => {
+  const getTableRows = (producto, idx) => {
     const thisProductComponents = Object.keys(registro[producto].components);
 
-    console.log(kkeys);
+    console.log("kkeys", kkeys);
+    console.warn(idx, kkeys[idx])
     //map con index para las referencias
     return thisProductComponents.map((component) => {
       return (
         <>
           <div className="printtablerow">
-            <div className="printref">{'kkeys[0]'}</div>
+            <div className="printref">{(kkeys[idx] && kkeys[idx].components && kkeys[idx].components[component].kkey) || 0}</div>
             <div className="printnombre">{component}</div>
             <div className="printheadercantidad">
               {registro[producto].components[component] *
@@ -73,8 +74,12 @@ export default function Registro() {
 
     return (
       <>
-        {productos.map((producto) => (
-          <>
+        {productos.map((producto, idx) => (
+          <div className='unahoja'>
+            <div className="printheader">
+              <div className="printregistro">Registro: {id}</div>
+              <div className="printfecha">{getFecha()}</div>
+            </div>
             <div className="printheaderdos">
               <div className="printproduct">{producto}</div>
               <div className="printcantidad">
@@ -87,9 +92,9 @@ export default function Registro() {
                 <div className="printnombre">Nombre</div>
                 <div className="printheadercantidad">Cantidad</div>
               </div>
-              {getTableRows(producto)}
+              {getTableRows(producto, idx)}
             </div>
-          </>
+          </div>
         ))}
       </>
     );
@@ -139,10 +144,6 @@ export default function Registro() {
       </div>
       <Button onClick={() => navigate('/print')}>PRINT SCREEN</Button>
       <div className="printablediv showprintable">
-        <div className="printheader">
-          <div className="printregistro">Registro: {id}</div>
-          <div className="printfecha">{getFecha()}</div>
-        </div>
         {imprimirRegistroCuerpo()}
       </div>
     </>

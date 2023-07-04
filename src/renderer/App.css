@@ -10374,11 +10374,15 @@ a.text-dark:hover, a.text-dark:focus {
   position: absolute;
   left: 0;
   top: 0;
-  width: 21cm;
-  height: 29.7cm; 
-  border: solid #5B6DCD 10px;
+  width: 28cm;
   display: flex;
   flex-direction: column;
+}
+
+.unahoja{
+  padding-top: 6px;
+  height: 40cm;
+  border: solid black 2px;
 }
 
 .printheader{
@@ -10387,16 +10391,19 @@ a.text-dark:hover, a.text-dark:focus {
   justify-content: space-between;
   margin-left: 8%;
   margin-right: 8%;
+  font-size: larger;
+  margin-bottom: 10px;
 }
 
 .printheaderdos{
   background-color: #7abaff;
   display: flex;
   justify-content: space-between;
-  font-size: x-large;
+  font-size: xx-large;
   margin-left: 8%;
   margin-right: 8%;
   font-weight: 700;
+  margin-bottom: 4px;
 
 }
 .printtable{
@@ -10408,12 +10415,14 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .printtableheader{
-  font-size:larger;
+  font-size:x-large;
   display: flex;
   width: 100%;
   flex-direction: row;
   font-weight: 700;
   border-bottom: solid black 1px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   
 }
 .printref{
@@ -10430,9 +10439,10 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .printtablerow{
-  font-size: large;
+  font-size: x-large;
   display: flex;
-  padding-top: 2px;
+  padding-top: 8px;
+
 }
 .printfooter{
   background-color: #ffc107;
