@@ -24,7 +24,7 @@
     },
     "test2": { "kkey": 4, "components": { "test product": "1" } },
     "test3": { "kkey": 5, "components": { "test product": "1", "test2": "5" } },
-    "test12341": { "components": { "test2": 4, "test product": 4 }, "kkey": 5 }
+    "test12341": { "components": { "test2": 4, "test product": 4 }, "kkey": 6 }
   },
   "keyCounter": 6
 }

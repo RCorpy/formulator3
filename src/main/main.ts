@@ -15,6 +15,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import fs from 'fs';
+import { json } from 'stream/consumers';
 
 class AppUpdater {
   constructor() {
@@ -57,31 +58,71 @@ ipcMain.on('get-full-registro', async (event, arg) => {
 
 ipcMain.on('get-this-registro', async (event, arg) => {
   const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
-
+  const jsonDB = JSON.parse(fs.readFileSync('jsondb.json', 'utf8'));
   event.reply('got-this-registro', registroDB[arg]);
 
+  const componentsArray = Object.keys(registroDB[arg]);
   // aqui deberia sacar refs
-});
 
-ipcMain.on('get-refs', async (event, arg:Array) => {
-  const jsonDB = JSON.parse(fs.readFileSync('jsondb.json', 'utf8'));
+  console.warn(componentsArray);
 
-  const returnArray = []
-  arg.forEach(element => {
-    if(jsonDB.rawMats[element]){
-      returnArray.unshift(jsonDB.rawMats[element].kkey)
+  let returnArray = [];
+  componentsArray.forEach((element) => {
+    if (jsonDB.rawMats[element]) {
+      returnArray.push({
+        kkey: jsonDB.rawMats[element].kkey,
+        components: false,
+      });
     }
-    if(jsonDB.formulas[element]){
-      jsonDB.formulas[element].kkey
+    if (jsonDB.formulas[element]) {
+      let componentsOfObject = jsonDB.formulas[element].components;
+
+      let keysOfObject = Object.keys(componentsOfObject);
+
+      keysOfObject.forEach((key) => {
+        if (jsonDB.rawMats[key]) {
+          componentsOfObject[key] = {
+            kkey: jsonDB.rawMats[key].kkey,
+            cantidad: componentsOfObject[key],
+          };
+        } else if (jsonDB.formulas[key]) {
+          componentsOfObject[key] = {
+            kkey: jsonDB.formulas[key].kkey,
+            cantidad: componentsOfObject[key],
+          };
+        }
+      });
+
+      returnArray.push({
+        kkey: jsonDB.formulas[element].kkey,
+        components: componentsOfObject,
+      });
     }
   });
-  
+
+  console.log(returnArray);
+  event.reply('got-refs', returnArray);
+});
+
+ipcMain.on('get-refs', async (event, arg: Array) => {
+  const jsonDB = JSON.parse(fs.readFileSync('jsondb.json', 'utf8'));
+
+  const returnArray = [];
+  arg.forEach((element) => {
+    if (jsonDB.rawMats[element]) {
+      returnArray.unshift(jsonDB.rawMats[element].kkey);
+    }
+    if (jsonDB.formulas[element]) {
+      jsonDB.formulas[element].kkey;
+    }
+  });
+
   event.reply('got-refs', returnArray);
 });
 
 ipcMain.on('delete-this-registro', async (event, arg) => {
   let registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
-  delete registroDB[arg]
+  delete registroDB[arg];
   let jsonString = JSON.stringify(registroDB);
   fs.writeFileSync('registrodb.json', jsonString);
   event.reply('deleted-this-registro');
