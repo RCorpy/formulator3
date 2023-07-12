@@ -34,6 +34,13 @@ ipcMain.on('restoreSavedData', async (event, arg) => {
   });
 });
 
+ipcMain.on('eraseSavedData', async (event, arg) => {
+  fs.unlink(`./savedjsons/${arg}`, (err) => {
+    if (err) throw err;
+    console.log('arg was erased');
+  });
+});
+
 ipcMain.on('ipc-example', async (event, arg) => {
   console.log('THIS IS THE ARG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', arg);
   console.log('end of arg');

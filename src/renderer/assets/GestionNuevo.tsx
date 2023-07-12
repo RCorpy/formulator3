@@ -12,7 +12,7 @@ export default function GestionNuevo({ fullData, setFullData }) {
   const [showAlert, setShowAlert] = useState(false);
   const [product, setProduct] = useState({
     name: '',
-    components: { test2: 4, 'test product': 4 },
+    components: {},
     price: 0,
     providers: '',
   });
@@ -121,7 +121,6 @@ export default function GestionNuevo({ fullData, setFullData }) {
 
       {isFormula ? (
         <div className="createFormula">
-          formulaCreator
           <InputGroup className="mb-3">
             <InputGroup.Text>Nombre</InputGroup.Text>
             <Form.Control
@@ -152,14 +151,6 @@ export default function GestionNuevo({ fullData, setFullData }) {
           <Button variant="success" onClick={() => save()}>
             Guardar
           </Button>
-          <Button
-            variant="success"
-            onClick={() => {
-              console.log(fullData);
-            }}
-          >
-            test
-          </Button>
           <AddToFormulaModal
             show={addToFormulaModalShow}
             onHide={() => setAddToFormulaModalShow(false)}
@@ -171,7 +162,6 @@ export default function GestionNuevo({ fullData, setFullData }) {
         </div>
       ) : (
         <div className="createRawMat">
-          rawMatCreator
           <InputGroup className="mb-3">
             <InputGroup.Text>Nombre</InputGroup.Text>
             <Form.Control
@@ -216,14 +206,6 @@ export default function GestionNuevo({ fullData, setFullData }) {
           </InputGroup>
           <Button variant="success" onClick={() => saveRawMat()}>
             Guardar
-          </Button>
-          <Button
-            variant="success"
-            onClick={() => {
-              console.log(product);
-            }}
-          >
-            test
           </Button>
         </div>
       )}

@@ -153,7 +153,7 @@ export default function ProductSelector({ setFullData, fullData, searched }) {
             <th style={colSpans.n}>{fullData.rawMats[element].kkey}</th>
             <th style={colSpans.nombre}>{element}</th>
             <th style={colSpans.cantidad}>
-              {Number(localFunctionObject[element]) * cantidad}
+              {(Number(localFunctionObject[element]) * cantidad).toFixed(3)}
             </th>
             <th style={colSpans.precio}>{precioLocal}</th>
           </tr>
@@ -162,7 +162,10 @@ export default function ProductSelector({ setFullData, fullData, searched }) {
         //console.log("formula", element)
         let precioLocal = calcularPrecio(element);
 
-        total = total + precioLocal * Number(localFunctionObject[element]);
+        total = (
+          Number(total) +
+          precioLocal * Number(localFunctionObject[element])
+        ).toFixed(3);
 
         //console.log(precioLocal, "->", total)
         return (
@@ -170,7 +173,7 @@ export default function ProductSelector({ setFullData, fullData, searched }) {
             <th style={colSpans.n}>{fullData.formulas[element].kkey}</th>
             <th style={colSpans.nombre}>{element}</th>
             <th style={colSpans.cantidad}>
-              {Number(localFunctionObject[element]) * cantidad}
+              {(Number(localFunctionObject[element]) * cantidad).toFixed(3)}
             </th>
             <th style={colSpans.precio}>{precioLocal}</th>
           </tr>
@@ -191,7 +194,9 @@ export default function ProductSelector({ setFullData, fullData, searched }) {
         <th style={colSpans.n}></th>
         <th style={colSpans.nombre}>Precios</th>
         <th style={colSpans.cantidad}>{total + '€/unidad'}</th>
-        <th style={colSpans.precio}>{'TOTAL ' + total * cantidad + '€'}</th>
+        <th style={colSpans.precio}>
+          {'TOTAL ' + (total * cantidad).toFixed(3) + '€'}
+        </th>
       </tr>
     );
     return (

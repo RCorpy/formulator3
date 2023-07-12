@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 export default function DangerModalDatos({
@@ -13,6 +14,8 @@ export default function DangerModalDatos({
   const [savedFiles, setSavedFiles] = useState([]);
   const [jsonOption, setJsonOption] = useState('');
 
+  const navigate = useNavigate();
+
   const handleAceptar = () => {
     onHide();
     window.electron.ipcRenderer.sendMessage('restoreSavedData', jsonOption);
@@ -21,7 +24,8 @@ export default function DangerModalDatos({
 
   const handleBorrar = () => {
     onHide();
-    console.log('borrando');
+    window.electron.ipcRenderer.sendMessage('eraseSavedData', jsonOption);
+    navigate('/');
   };
 
   window.electron.ipcRenderer.once('sendSavedFiles', (recievedSavedFiles) => {

@@ -18,28 +18,6 @@ import Registro from './assets/Registro';
 import PrintScreen from './assets/PrintScreen';
 import './App.css';
 
-function Hello({ getJSONData }) {
-  return (
-    <div>
-      <Form.Group controlId="formFileMultiple" className="mb-3">
-        <Form.Label>Seleccione excel del sistema</Form.Label>
-        <input
-          type="file"
-          onChange={(e) => {
-            //@ts-ignore
-            if (e.target.files[0]) return showFile(e.target.files[0]);
-          }}
-          multiple
-        />
-      </Form.Group>
-      <Button onClick={getJSONData}>GET JSON DATA</Button>
-      <Link to="/modificar/14">
-        <Button>{'A Product Selector con variable 14'}</Button>
-      </Link>
-    </div>
-  );
-}
-
 function Example() {
   return (
     <>
@@ -74,14 +52,11 @@ export default function App() {
       <Router>
         {Example()}
         <Routes>
-          <Route path="/" element={<Hello getJSONData={getJSONData} />} />
+          <Route path="/" element={<Menu />} />
 
           <Route path="/menu" element={<Menu />} />
 
-          <Route
-            path="/print"
-            element={<PrintScreen />}
-          />
+          <Route path="/print" element={<PrintScreen />} />
 
           <Route
             path="/fabricacion"
