@@ -28,14 +28,20 @@ class AppUpdater {
 let mainWindow: BrowserWindow | null = null;
 
 ipcMain.on('restoreSavedData', async (event, arg) => {
-  fs.copyFile(`./savedjsons/${arg}`, 'jsondb.json', (err) => {
-    if (err) throw err;
-    console.log('jsondb.json was copied to destination.json');
-  });
+  fs.copyFile(
+    `./resources/assets/savedjsons/${arg}`,
+    './resources/assets/jsondb.json',
+    (err) => {
+      if (err) throw err;
+      console.log(
+        './resources/assets/jsondb.json was copied to destination.json'
+      );
+    }
+  );
 });
 
 ipcMain.on('eraseSavedData', async (event, arg) => {
-  fs.unlink(`./savedjsons/${arg}`, (err) => {
+  fs.unlink(`./resources/assets/savedjsons/${arg}`, (err) => {
     if (err) throw err;
     console.log('arg was erased');
   });
@@ -46,26 +52,34 @@ ipcMain.on('ipc-example', async (event, arg) => {
   console.log('end of arg');
 
   let jsonString = JSON.stringify(arg);
-  fs.writeFileSync('jsondb.json', jsonString);
+  fs.writeFileSync('./resources/assets/jsondb.json', jsonString);
 
   event.reply('ipc-example', 'pong');
 });
 
 ipcMain.on('get-last-registro', async (event, arg) => {
-  const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
+  const registroDB = JSON.parse(
+    fs.readFileSync('./resources/assets/registrodb.json', 'utf8')
+  );
 
   event.reply('got-last-registro', registroDB.lastnumber + 1);
 });
 
 ipcMain.on('get-full-registro', async (event, arg) => {
-  const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
+  const registroDB = JSON.parse(
+    fs.readFileSync('./resources/assets/registrodb.json', 'utf8')
+  );
 
   event.reply('got-full-registro', registroDB);
 });
 
 ipcMain.on('get-this-registro', async (event, arg) => {
-  const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
-  const jsonDB = JSON.parse(fs.readFileSync('jsondb.json', 'utf8'));
+  const registroDB = JSON.parse(
+    fs.readFileSync('./resources/assets/registrodb.json', 'utf8')
+  );
+  const jsonDB = JSON.parse(
+    fs.readFileSync('./resources/assets/jsondb.json', 'utf8')
+  );
   event.reply('got-this-registro', registroDB[arg]);
 
   const componentsArray = Object.keys(registroDB[arg]);
@@ -112,7 +126,9 @@ ipcMain.on('get-this-registro', async (event, arg) => {
 });
 
 ipcMain.on('get-refs', async (event, arg: Array) => {
-  const jsonDB = JSON.parse(fs.readFileSync('jsondb.json', 'utf8'));
+  const jsonDB = JSON.parse(
+    fs.readFileSync('./resources/assets/jsondb.json', 'utf8')
+  );
 
   const returnArray = [];
   arg.forEach((element) => {
@@ -128,10 +144,12 @@ ipcMain.on('get-refs', async (event, arg: Array) => {
 });
 
 ipcMain.on('delete-this-registro', async (event, arg) => {
-  let registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
+  let registroDB = JSON.parse(
+    fs.readFileSync('./resources/assets/registrodb.json', 'utf8')
+  );
   delete registroDB[arg];
   let jsonString = JSON.stringify(registroDB);
-  fs.writeFileSync('registrodb.json', jsonString);
+  fs.writeFileSync('./resources/assets/registrodb.json', jsonString);
   event.reply('deleted-this-registro');
 });
 
@@ -147,7 +165,9 @@ ipcMain.on('registrar', async (event, arg) => {
     today.getMonth() + 1
   }-${today.getFullYear()}`;
 
-  const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
+  const registroDB = JSON.parse(
+    fs.readFileSync('./resources/assets/registrodb.json', 'utf8')
+  );
 
   if (registroDB[registro]) {
     event.reply('existe-registro');
@@ -162,7 +182,7 @@ ipcMain.on('registrar', async (event, arg) => {
       registroDB.lastnumber = Number(registro);
     }
     let jsonString = JSON.stringify(registroDB);
-    fs.writeFileSync('registrodb.json', jsonString);
+    fs.writeFileSync('./resources/assets/registrodb.json', jsonString);
     event.reply('registro-completo');
   }
 });
@@ -179,7 +199,9 @@ ipcMain.on('add-to-registro', async (event, arg) => {
   let cantidad = arg.cantidad;
   let product = arg.product;
 
-  const registroDB = JSON.parse(fs.readFileSync('registrodb.json', 'utf8'));
+  const registroDB = JSON.parse(
+    fs.readFileSync('./resources/assets/registrodb.json', 'utf8')
+  );
 
   registroDB[registro][product.name] = {
     cantidad: cantidad,
@@ -187,7 +209,7 @@ ipcMain.on('add-to-registro', async (event, arg) => {
     date: date,
   };
   let jsonString = JSON.stringify(registroDB);
-  fs.writeFileSync('registrodb.json', jsonString);
+  fs.writeFileSync('./resources/assets/registrodb.json', jsonString);
   event.reply('registro-completo');
 });
 
@@ -203,20 +225,27 @@ ipcMain.on('newSaveData', async (event, arg) => {
 
   const filename = `${year}${month}${day}`;
 
-  fs.copyFile('jsondb.json', `./savedjsons/${filename}.json`, (err) => {
-    if (err) throw err;
-    console.log('jsondb.json was copied to destination.json');
-  });
+  fs.copyFile(
+    './resources/assets/jsondb.json',
+    `./resources/assets/savedjsons/${filename}.json`,
+    (err) => {
+      if (err) throw err;
+      console.log(
+        './resources/assets/jsondb.json was copied to destination.json'
+      );
+    }
+  );
 
   //let jsonString = JSON.stringify(arg);
-  //fs.writeFileSync('jsondb.json', jsonString);
+  //fs.writeFileSync('./resources/assets/jsondb.json', jsonString);
 
   event.reply('ipc-example', 'pong');
 });
 
 ipcMain.on('getFullSetOfData', async (event, arg) => {
-  const jsonDB = JSON.parse(fs.readFileSync('jsondb.json', 'utf8'));
-  //fs.writeFileSync("thing.json", jsonString)
+  const jsonDB = JSON.parse(
+    fs.readFileSync('./resources/assets/jsondb.json', 'utf8')
+  );
   console.log(jsonDB);
 
   event.reply('getFullSetOfData', jsonDB);
@@ -227,7 +256,7 @@ ipcMain.on('getSavedFiles', async (event, arg) => {
   //getting saved files
 
   const CWD = process.cwd();
-  fs.readdir(`${CWD}/savedjsons`, function (err, files) {
+  fs.readdir(`${CWD}/resources/assets/savedjsons`, function (err, files) {
     if (err) {
       return console.log('Unable to scan directory: ' + err);
     } else {
@@ -270,7 +299,7 @@ const createWindow = async () => {
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
+    : path.join(__dirname, '../../resources/assets');
 
   const getAssetPath = (...paths: string[]): string => {
     return path.join(RESOURCES_PATH, ...paths);
