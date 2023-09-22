@@ -16,6 +16,11 @@ export default function GestionNuevo({ fullData, setFullData }) {
     price: 0,
     providers: '',
   });
+  const [kkey, setKkey] = useState("")
+
+  const handleCodeChange = (event) => {
+    setKkey(event.target.value)
+  }
 
   const handleNameChange = (event, key) => {
     setProduct((prevProduct) => {
@@ -35,9 +40,9 @@ export default function GestionNuevo({ fullData, setFullData }) {
         const newData = { ...prevData };
         newData.formulas[productName] = {
           components: product.components,
-          kkey: prevData.keyCounter,
+          kkey: kkey,
         };
-        newData.keyCounter = prevData.keyCounter + 1;
+        newData.keyCounter = prevData.keyCounter + 1; //no necesario
         navigate('/gestion/buscar');
         persistFunc(newData);
         return newData;
@@ -54,11 +59,11 @@ export default function GestionNuevo({ fullData, setFullData }) {
       setFullData((prevData) => {
         const newData = { ...prevData };
         newData.rawMats[productName] = {
-          kkey: prevData.keyCounter,
+          kkey: kkey, 
           price: product.price,
           providers: product.providers,
         };
-        newData.keyCounter = prevData.keyCounter + 1;
+        newData.keyCounter = prevData.keyCounter + 1; //no necesario
         persistFunc(newData);
         return newData;
       });
@@ -122,6 +127,11 @@ export default function GestionNuevo({ fullData, setFullData }) {
       {isFormula ? (
         <div className="createFormula">
           <InputGroup className="mb-3">
+          <InputGroup.Text>Codigo</InputGroup.Text>
+            <Form.Control
+              onChange={() => handleCodeChange(event)}
+              value={kkey}
+            />
             <InputGroup.Text>Nombre</InputGroup.Text>
             <Form.Control
               onChange={() => handleNameChange(event, 'name')}
@@ -163,6 +173,11 @@ export default function GestionNuevo({ fullData, setFullData }) {
       ) : (
         <div className="createRawMat">
           <InputGroup className="mb-3">
+          <InputGroup.Text>Codigo</InputGroup.Text>
+            <Form.Control
+              onChange={() => handleCodeChange(event)}
+              value={kkey}
+            />
             <InputGroup.Text>Nombre</InputGroup.Text>
             <Form.Control
               onChange={() => handleNameChange(event, 'name')}
