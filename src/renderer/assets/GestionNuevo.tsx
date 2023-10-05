@@ -22,10 +22,20 @@ export default function GestionNuevo({ fullData, setFullData }) {
     setKkey(event.target.value)
   }
 
-  const handleNameChange = (event, key) => {
+  const handleProductChange = (event, key) => {
     setProduct((prevProduct) => {
       let newProduct = { ...prevProduct };
       newProduct[key] = event.target.value;
+      return newProduct;
+    });
+
+    setShowAlert(false);
+  };
+
+  const handleNameChange = (event) => {
+    setProduct((prevProduct) => {
+      let newProduct = { ...prevProduct };
+      newProduct["name"] = event.target.value.toUpperCase();
       return newProduct;
     });
 
@@ -194,7 +204,7 @@ export default function GestionNuevo({ fullData, setFullData }) {
           <InputGroup className="mb-3">
             <InputGroup.Text>Price</InputGroup.Text>
             <Form.Control
-              onChange={() => handleNameChange(event, 'price')}
+              onChange={() => handleProductChange(event, 'price')}
               value={product.price}
             />
             {showAlert ? (
@@ -208,7 +218,7 @@ export default function GestionNuevo({ fullData, setFullData }) {
           <InputGroup className="mb-3">
             <InputGroup.Text>Proveedores</InputGroup.Text>
             <Form.Control
-              onChange={() => handleNameChange(event, 'providers')}
+              onChange={() => handleProductChange(event, 'providers')}
               value={product.providers}
             />
             {showAlert ? (
