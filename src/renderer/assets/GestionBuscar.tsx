@@ -18,7 +18,7 @@ export default function GestionBuscar({ fullData, setSearched, searched }) {
   }, [fullData]);
 
   const handleSearchChange = (event: any) => {
-    setCurrentSearchTerm(event.target.value);
+    setCurrentSearchTerm(event.target.value.toUpperCase());
   };
   const handleVer = (element) => {
     setSearched(element);
@@ -73,7 +73,7 @@ export default function GestionBuscar({ fullData, setSearched, searched }) {
       <div>GestionBuscar</div>
       <InputGroup className="mb-3">
         <InputGroup.Text>busqueda</InputGroup.Text>
-        <Form.Control onChange={handleSearchChange} />
+        <Form.Control onChange={() => handleSearchChange(event)} />
       </InputGroup>
 
       <Table striped bordered hover responsive="md">

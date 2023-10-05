@@ -24,7 +24,7 @@ export default function addToFormulaModal({
   }, [fullData]);
 
   const handleSearchChange = (event: any) => {
-    setCurrentSearchTerm(event.target.value);
+    setCurrentSearchTerm(event.target.value.toUpperCase()S);
   };
   const handleSelect = (element) => {
     //SELECCIONAR ELEMENTO, HABILITAR GUARDAR

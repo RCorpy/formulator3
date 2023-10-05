@@ -77,7 +77,7 @@ export default function GetProductModal({show, onHide, fullData, setProduct}) {
         <div>    
           <InputGroup className="mb-3" >
             <InputGroup.Text>busqueda</InputGroup.Text>
-            <Form.Control value={currentSeachTerm} onChange={(event)=>{setCurrentSearchTerm(event.target.value)}}/>
+            <Form.Control value={currentSeachTerm} onChange={(event)=>{setCurrentSearchTerm(event.target.value.toUpperCase())}}/>
           </InputGroup>
         </div>
         <Table striped bordered hover responsive="md">
