@@ -57,12 +57,13 @@ export default function Registro() {
       return (
         <>
           <div className="printtablerow">
-            <div className="printref">{(kkeys[idx] && kkeys[idx].components && kkeys[idx].components[component].kkey) || 0}</div>
+            
             <div className="printnombre">{component}</div>
             <div className="printheadercantidad">
               {registro[producto].components[component] *
                 registro[producto].cantidad}
             </div>
+            <div className="printref">{(kkeys[idx] && kkeys[idx].components && kkeys[idx].components[component].kkey) || 0}</div>
           </div>
         </>
       );
@@ -81,6 +82,9 @@ export default function Registro() {
               <div className="printfecha">{getFecha()}</div>
             </div>
             <div className="printheaderdos">
+              <div className="printproduct">Orden de Fabricación: {id}</div>
+            </div>
+            <div className="printheaderdos">
               <div className="printproduct">{producto}</div>
               <div className="printcantidad">
                 {registro[producto].cantidad} Kgs
@@ -88,9 +92,10 @@ export default function Registro() {
             </div>
             <div className="printtable">
               <div className="printtableheader">
-                <div className="printref">Ref</div>
+                
                 <div className="printnombre">Nombre</div>
                 <div className="printheadercantidad">Cantidad</div>
+                <div className="printref">Code</div>
               </div>
               {getTableRows(producto, idx)}
             </div>
