@@ -73,7 +73,10 @@ export default function GestionBuscar({ fullData, setSearched, searched }) {
       <div>GestionBuscar</div>
       <InputGroup className="mb-3">
         <InputGroup.Text>busqueda</InputGroup.Text>
-        <Form.Control onChange={() => handleSearchChange(event)} />
+        <Form.Control
+        onChange={() => handleSearchChange(event)} 
+        value={currentSeachTerm}
+        />
       </InputGroup>
 
       <Table striped bordered hover responsive="md">

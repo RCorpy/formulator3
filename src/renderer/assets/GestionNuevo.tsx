@@ -19,7 +19,7 @@ export default function GestionNuevo({ fullData, setFullData }) {
   const [kkey, setKkey] = useState("")
 
   const handleCodeChange = (event) => {
-    setKkey(event.target.value)
+    setKkey(event.target.value.toUpperCase())
   }
 
   const handleProductChange = (event, key) => {
