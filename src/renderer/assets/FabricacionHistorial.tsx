@@ -53,13 +53,14 @@ export default function FabricacionHistorial() {
 
     console.warn(recordsToShowArray);
 
-    return recordsToShowArray.map((record) => {
+    return recordsToShowArray.reverse().map((record) => {
       let duplicateRecord = { ...record };
       //remove whatever isnt products
       delete duplicateRecord.registro;
 
       //get keys of products
       let productsArray = Object.keys(duplicateRecord);
+
       return (
         <>
           {productsArray.map((product) => (

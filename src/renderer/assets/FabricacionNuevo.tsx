@@ -59,6 +59,7 @@ export default function FabricacionNuevo({ fullData, setFullData }) {
   window.electron.ipcRenderer.once('registro-completo', () => {
     // eslint-disable-next-line no-console
     console.log('registro-completo');
+    navigate('/fabricacion/historial');
   });
 
   const handleRegistro = (event) => {
