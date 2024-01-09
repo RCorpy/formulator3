@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Table, InputGroup } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 
 export default function FabricacionHistorial() {
   const navigate = useNavigate();
-
+  const [page, setPage] = useState(0)
+  const [currentRegistro, setCurrentRegistro] =useState(0)
   const [fullRegistro, setFullRegistro] = useState({
     '0': {
       'test product2': {
@@ -30,26 +32,25 @@ export default function FabricacionHistorial() {
     window.electron.ipcRenderer.once('got-full-registro', (recievedData) => {
       // eslint-disable-next-line no-console
       setFullRegistro(recievedData);
+      setCurrentRegistro(recievedData.lastnumber)
     });
   };
 
-  const getVisibleRows = (page) => {
-    let lastRegistro = fullRegistro.lastnumber;
+  const getVisibleRows = () => {
 
-    let amountPerPage = 20;
-    let counter = 0;
-    let currentRegistro = Number(fullRegistro.lastnumber);
+    let amountPerPage = 15;
     let recordsToShowArray = [];
+    let currentPos = currentRegistro
 
     do {
-      if (fullRegistro[currentRegistro]) {
+      if (fullRegistro[currentPos]) {
         recordsToShowArray.unshift({
-          ...fullRegistro[currentRegistro],
-          registro: currentRegistro,
+          ...fullRegistro[currentPos],
+          registro: currentPos,
         });
       }
-      currentRegistro = currentRegistro - 1;
-    } while (currentRegistro >= 0 && recordsToShowArray.length < amountPerPage);
+      currentPos = currentPos - 1;
+    } while (currentPos >= 0 && recordsToShowArray.length < amountPerPage);
 
     console.warn(recordsToShowArray);
 
@@ -80,9 +81,21 @@ export default function FabricacionHistorial() {
     });
   };
 
+  const anterior = () => {
+    setCurrentRegistro(currentRegistro-15)
+  }
+  const siguiente = () => {
+    setCurrentRegistro(currentRegistro+15)
+  }
+ const currentRegistroChange = (e) =>{
+  setCurrentRegistro(e.target.value)
+ }
+
   return (
     <>
       <div>FabricacionHistorial</div>
+      
+      <Button onClick={anterior}>Anterior</Button><input type="number" value={currentRegistro} onChange={(e)=>currentRegistroChange(e)}/><Button onClick={siguiente}>Siguiente</Button>
       <Table striped bordered hover responsive="md">
         <tbody>
           <tr>
@@ -91,7 +104,7 @@ export default function FabricacionHistorial() {
             <th>Producto</th>
             <th>Cantidad</th>
           </tr>
-          {getVisibleRows(0)}
+          {getVisibleRows()}
         </tbody>
       </Table>
     </>
